@@ -1,0 +1,410 @@
+ .flex-general-center {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 100vh;
+     min-width: 100%;
+     padding: 0, 5rem;
+ }
+
+ .texte-2xl {
+     font-size: 1.5rem;
+     /* Correspond à 24px */
+     line-height: 2rem;
+     /* Correspond à 32px */
+ }
+
+ .texte-xl {
+     font-size: 1.25rem;
+     /* Correspond à 20px */
+     line-height: 1.75rem;
+     /* Correspond à 28px */
+ }
+
+ .dest {
+
+     font-size: 20px;
+
+ }
+
+
+
+ .text-xs-custom {
+     font-size: 0.5rem;
+ }
+
+ .center-horizontal {
+     background-color: white;
+     margin-left: auto;
+     margin-right: auto;
+ }
+
+ .w-largeur-border-color {
+     width: 100%;
+     border-width: 1px;
+     border-style: solid;
+     border-color: #cbd5e0;
+
+ }
+
+ .section1 {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     /*  border: 1px solid black; */
+     border-left: 1px solid black;
+
+
+     height: 6rem;
+ }
+
+ .bordure-reigth {
+     border-right: 1px solid black;
+ }
+
+ .pad {
+     padding: 0.75rem;
+ }
+
+ .border-blackful {
+     border: 1px solid black;
+ }
+
+ .p-personnel1 {
+     font-size: 0.875rem;
+     font-weight: 600;
+ }
+
+ .p-personnel2 {
+     font-size: 1.25rem;
+     font-weight: bold;
+ }
+
+ .border-div {
+     border-right-width: 1px;
+     border-right-style: solid;
+ }
+
+ .p-texte {
+     font-weight: 0.75rem;
+     font-weight: bold;
+ }
+
+ .texte-center {
+     text-align: center;
+ }
+
+ .border-le {
+     border-left: 1px solid;
+ }
+
+ .border-ri {
+     border-right: 1px solid;
+ }
+
+ .texte-xs {
+     font-size: 0.75rem;
+ }
+
+ .template-grid85 {
+     grid-template-rows: 85% 15%;
+     height: 150px;
+     border-width: 1px;
+     border-style: solid;
+     border-color: black;
+ }
+
+ .template-grid60 {
+     display: grid;
+     grid-template-columns: 60% 40%;
+ }
+
+ .template-repeate {
+     display: grid;
+     grid-template-columns: repeat(4, 1fr);
+     border-color: black;
+ }
+
+ .fontbold {
+     font-weight: bold;
+ }
+
+ .wu-ful {
+     width: 100%;
+ }
+
+ .hu {
+     height: 100%;
+ }
+
+ .col-grid-4 {
+     display: grid;
+     grid-template-columns: repeat(4, 1fr);
+ }
+
+ .grid-section {
+     display: grid;
+     width: 100%;
+
+ }
+
+ .borde-top {
+     border-top: 1px solid black;
+ }
+
+ .borde-black {
+     border-color: black;
+ }
+
+ .hau {
+     height: 25px;
+
+ }
+
+ .col-grid-3 {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+ }
+
+ .border-le {
+     border-color: black;
+ }
+
+ .marge {
+     margin-bottom: 50px;
+
+ }
+
+ .hfinal {
+     height: 20px;
+
+ }
+
+ .hrigth {
+     height: 100px;
+ }
+
+ .bottom-marge {
+
+     height: 125px;
+ }
+
+ /*   la partir difficile */
+
+ .cols-grid-2 {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     border-bottom: none;
+     height: 250px;
+     border: 1px solid black;
+ }
+
+ .soudiv1 {
+     display: grid;
+     grid-template-rows: 60% 25% 15%;
+     border-right: 1px solid black;
+     border-bottom: 1px solid black;
+     border-color: black;
+ }
+
+ .soudiv2 {
+     border-color: black;
+     border-bottom: relative;
+     border-color: black;
+     position: relative;
+ }
+
+ .ppositions {
+     position: absolute;
+     bottom: 0;
+     left: 20px;
+     right: 20px;
+ }
+
+ .div2 {
+     border-color: black;
+     border-bottom: 1px solid black;
+ }
+
+ .div2-1 {
+     display: grid;
+     grid-template-rows: repeat(3, 1fr);
+     border-color: black;
+ }
+
+ .div200 {
+     position: relative;
+ }
+
+ .div24 {
+     position: absolute;
+     width: 10px;
+     height: 10px;
+     border: 1px solid;
+     border-color: black;
+
+ }
+
+ .pl {
+     padding-left: 4px;
+ }
+
+ .div25 {
+     position: absolute;
+     left: 20px;
+     width: 100%;
+ }
+
+ .div26 {
+     width: 10px;
+     height: 10px;
+     border: 1px solid;
+     border-color: black;
+ }
+
+ .div-container {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+
+ }
+
+ .divgridcols2 {
+     display: grid;
+     grid-template-rows: repeat(2, 1fr);
+     position: relative;
+ }
+
+ .p-personnelle {
+     position: absolute;
+     left: 20px;
+ }
+
+ .p-personnelle1 {
+     position: absolute;
+     left: 20px;
+     margin-top: 16px;
+     margin-bottom: 16px;
+ }
+
+ .gridrows207010 {
+     display: grid;
+     grid-template-rows: 20% 70% 10%;
+     border-color: black;
+     /* border-top: 1px solid black; */
+
+ }
+
+ .pl-11 {
+     padding-left: 4px;
+ }
+
+ .bord-black {
+     border-bottom: 1 px solid black;
+     border-color: black;
+
+ }
+
+ .grid-rows15304510 {
+     display: grid;
+     grid-template-rows: 15% 30% 45% 10%;
+     border-right: 1px solid black;
+     border-color: black;
+     border-top: 1px solid black;
+ }
+
+ .div20 {
+     display: grid;
+     grid-template-rows: repeat(2, 1fr);
+     border-top: 1px solid black;
+ }
+
+ .grid-rows204040 {
+     display: grid;
+     grid-template-rows: 20% 40% 40%;
+     border-top: 1px solid black;
+ }
+
+ .bord-top {
+     border-top: 1px solid black;
+ }
+
+ .bord-bottom {
+     border-bottom: 1px solid black;
+ }
+
+ .grid-rows15304515 {
+     border-right: 1px solid black;
+     display: grid;
+     grid-template-rows: 15% 30% 45% 10%;
+ }
+
+ .div-gridcols2 {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+ }
+
+
+
+ .boder-le {
+     border-right: 1px solid black;
+ }
+
+ .wid {
+     width: 100%;
+ }
+
+ .divsignaturecols {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     height: 110px;
+     border-color: black;
+ }
+
+ .divrelativesignature {
+     position: relative;
+ }
+
+ .pabsolute {
+     position: absolute;
+     left: 0px;
+     bottom: 0px;
+     margin-left: 10px;
+ }
+
+ .dernierdiv {
+     display: grid;
+     grid-template-rows: repeat(3, 1fr);
+     margin-top: 0px;
+     position: relative;
+ }
+
+ .dergrid {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+ }
+
+ .dpabsolute1 {
+     position: absolute;
+     left: 14px;
+ }
+
+ .dpabsolute2 {
+     position: absolute;
+     left: 14px;
+     margin-top: 12px;
+     margin-bottom: 12px;
+ }
+
+ .dpabsolute3 {
+     position: absolute;
+     bottom: 0px;
+     padding-left: 2px;
+
+ }
+
+ .boder-lee {
+     border-left: 1px solid black;
+ }
+
+ .boder-top {
+     border-top: 1px solid black;
+ }

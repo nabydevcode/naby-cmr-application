@@ -1,0 +1,506 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+
+	{% if shipment %}
+
+		<div class="relative">
+			<div class="absolute top-14 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+				<a href="{{ path('shipment_update', { id: shipment.id }) }}" class="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg font-semibold transition duration-300">
+					Update
+				</a>
+				<a href="{{ path('shipment_pdf', { id: shipment.id }) }}" class="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg font-semibold transition duration-300 ml-4">
+					Print-PDF
+				</a>
+			</div>
+		</div>
+
+		<!--  mon 2eme grand div -->
+		<div class="flex-general-center">
+			<div class="center-horizontal">
+				<div class="w-largeur-border-color ">
+
+					<div class="section1">
+						<div class="bordure-reigth boder-top">
+							<p class="text-xs-custom">1 - Expéditeur (Nom, Adresse, Pays)</p>
+							<p class="text-xs-custom">Sender (Name, Address, Country)</p>
+							<p class="texte-2xl texte-center">{{ shipment.company.name }}</p>
+							<p class="text-xs-custom texte-center fontbold ">
+								2 Rue Antoine De Saint-Exupéry
+								<br>
+								77950 Montereau-Sur-Le-Jard
+								<br>
+								France
+							</p>
+
+						</div>
+						<div class="pad boder-top border-ri">
+							<p class="texte-center  p-personnel1">LETTRE DE VOITURE INTERNATIONALE</p>
+							<p class="texte-center p-personnel2">CMR</p>
+						</div>
+
+					</div>
+
+					<div class="section1  ">
+						<div class="border-div boder-top">
+							<p class="text-xs-custom">2 - Destinataire (Nom, Adresse, Pays)</p>
+							<p class="text-xs-custom">Consigne (Name, Address, Country)</p>
+							{% if shipment.consigne.id == 2 %}
+								<p class="texte-2xl texte-center">{{ shipment.consigne.name }}</p>
+								<p class="text-xs-custom texte-center fontbold ">
+									D35 ,77950 Montereau-Sur-Le-Jard
+									<br>
+									France
+								</p>
+
+							{% elseif  shipment.consigne.id == 1 %}
+								<p class="texte-2xl texte-center">{{ shipment.consigne.name }}</p>
+								<p class="text-xs-custom texte-center fontbold ">
+									A5-3 ,77550 Reau
+									<br>
+									France
+								</p>
+							{% elseif  shipment.consigne.id == 3 %}
+								<p class="texte-2xl texte-center">{{ shipment.consigne.name }}</p>
+								<p class="text-xs-custom texte-center fontbold ">
+
+									Allemagne
+								</p>
+							{% endif %}
+
+						</div>
+						<div class=" boder-le  boder-top">
+							<p class="text-xs-custom">16-Transporteur (nom,adress,pays)</p>
+							<p class="text-xs-custom">carrer (name, address, country)</p>
+							<p class="text-xl fontbold texte-center">
+								{{ shipment.transporteur.name}}</p>
+
+						</div>
+					</div>
+
+					<div class="section1">
+						<div class="bord-bottom bord-top">
+							<p class="text-xs-custom">3 - Lieu prévue pour la livraison (Lieu, Pays)</p>
+							<p class="text-xs-custom">Place of delivery of the goods (place, Country)</p>
+
+
+							{% if shipment.consigne.id == 2 %}
+
+								<p class="texte-center fontbold ">
+									D35 ,77950 Montereau-Sur-Le-Jard
+									<br>
+									France
+								</p>
+
+							{% elseif  shipment.consigne.id == 1 %}
+
+								<p class=" text-xl texte-center  ">
+									A5-3 ,77550 Reau
+									<br>
+									France
+								</p>
+							{% elseif  shipment.consigne.id == 3 %}
+								<p class="texte-2xl texte-center">{{ shipment.consigne.name }}</p>
+								<p class="text-xs-custom texte-center  ">
+
+									Allemagne
+								</p>
+							{% endif %}
+						</div>
+						<div class=" border-le  border-ri">
+							<p class="text-xs-custom">17 - Transporteur successifs (nom, adress, pays)</p>
+							<p class="text-xs-custom">Successive carriers (name, address, country)</p>
+						</div>
+
+					</div>
+
+					<div class="section1">
+						<div class="  bord-bottom ">
+							<p class="text-xs-custom">4 - Lieu et date de la prise en charge de la marchandise (Lieu, Pays,
+																																																																																																																																																																																																																																																																																																																																																																																																																														date)</p>
+							<p class="text-xs-custom">Place and date of taking over the goods (place, country, date)</p>
+
+							<p class=" texte-center fontbold ">
+								2 Rue Antoine De Saint-Exupéry
+								<br>
+								77950 Montereau-Sur-Le-Jard
+								<br>
+								France
+							</p>
+
+						</div>
+
+						<div class="border-le  bord-top border-ri">
+							<p class="text-xs-custom">18 - Reserves et observations du transporteur</p>
+							<p class="text-xs-custom">Carriers reservations and observations</p>
+						</div>
+					</div>
+
+					<div class="section1">
+						<div class="border-ri ">
+							<p class="text-xs-custom">5 - Documents annexés</p>
+							<p class="text-xs-custom">Documents attached</p>
+							<p class="texte-xs fontbold texte-center">
+								Heure d'arriver:
+								{{ shipment.arrivalTime ? shipment.arrivalTime|date('H:i') : 'N/A' }}
+							</p>
+							<p class="texte-xs fontbold texte-center">
+								Heure de départ:
+								{{ shipment.departureTime ? shipment.departureTime|date('H:i') : 'N/A' }}
+							</p>
+
+
+						</div>
+						<div class="border-ri"></div>
+
+					</div>
+					<div class="template-grid85 ">
+						<div class="template-grid60   ">
+							<div class="template-repeate border-ri  bottom-marge ">
+								<div>
+									<p class="text-xs-custom">6-Marque et numero</p>
+									<p class="text-xs-custom">Documents attached</p>
+									<p class="texte-xs fontbold ">
+
+										{% if shipment.tract1 == 0 %}
+											{{shipment.trailerPlate}}
+
+										{% else %}
+											{{shipment.trailerPlate}}/{{shipment.tract1}}</p>
+									{% endif %}
+
+
+								</div>
+								<div>
+									<p class="text-xs-custom">7-Nombre de colis</p>
+									<p class="text-xs-custom">Number of packages</p>
+									<p class="texte-xs fontbold   texte-center">
+										{% if shipment.TypeLoading.id == 1 %}
+											{% if shipment.quantite2 == 0 %}
+												{{shipment.quantity}}</p>
+										{% else %}
+											{{shipment.quantity}}/{{shipment.quantite2}}</p>
+									{% endif %}
+
+								{% else %}
+									{{shipment.nombrePalette}}</p>
+							{% endif %}
+
+						</div>
+						<div>
+							<p class="text-xs-custom">8-Mode d'emballage</p>
+							<p class="text-xs-custom">Method of packing</p>
+							{% if shipment.TypeLoading.id == 1 %}
+								<p class="text-xs font-bold pt-2">Collis/Parcel</p>
+							{% else %}
+								<p class="text-xs font-bold pt-2">Palettes/Items</p>
+							{% endif %}
+
+
+						</div>
+						<div class="">
+							<p class="text-xs-custom">9-Nature de la Marchandise</p>
+							<p class="text-xs-custom">Nature of the goods</p>
+
+							<p class="texte-xs fontbold">
+								Mixed
+								<br>(Shoes/Textile)
+							</p>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-3 wu-ful hfinal10 ">
+						<div class="border-ri border-black  ">
+							<p class="text-xs-custom ">10-No Statistique</p>
+							<p class="text-xs-custom pl-1">Statiscal number</p>
+						</div>
+						<div class="border-ri ">
+							<p class="text-xs-custom">11-Poids brut kg</p>
+							<p class="text-xs-custom">
+								Gross weight in kg</p>
+						</div>
+						<div>
+							<p class="text-xs-custom">Cubage m^3</p>
+							<p class="text-xs-custom">Volume in m^3</p>
+						</div>
+					</div>
+
+				</div>
+				<div class="template-grid60 ">
+					<div class="col-grid-4 border-ri borde-top ">
+						<div class="">
+							<p class="text-xs-custom">Classe</p>
+							<p class="text-xs-custom">Class</p>
+						</div>
+						<div class="">
+							<p class="text-xs-custom">chiffre</p>
+							<p class="text-xs-custom">Number</p>
+						</div>
+						<div class="">
+							<p class="text-xs-custom">Lettre</p>
+							<p class="text-xs-custom">Letter</p>
+						</div>
+						<div class="">
+							<p class="text-xs-custom">(ADR*)</p>
+						</div>
+					</div>
+					<div class="borde-black col-grid-3 w-full ">
+						<div class="border-ri  hfinal  ">
+							<p class="text-xs-custom"></p>
+						</div>
+						<div class="border-ri ">
+							<p class="text-xs-custom"></p>
+						</div>
+						<div>
+							<p class="text-xs-custom"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="cols-grid-2">
+				<div class="soudiv1">
+					<div class="soudiv2">
+						<p class="text-xs-custom">13-Instructions de l'expediteur</p>
+						<p class="text-xs-custom">
+							Sender's Instructions</p>
+						<p class="texte-xs fontbold texte-center">Reference:{{shipment.numberReference}}
+						</p>
+
+						{% if shipment.plomb1 == 0 %}
+							<p class="texte-xs fontbold texte-center ">Plomb:{{shipment.sealNumber}}
+							</p>
+						{% else %}
+							<p class="texte-xs fontbold texte-center ">Plomb-1:
+
+								{{shipment.sealNumber}}->{{shipment.trailerPlate}}->{{shipment.quantity}}
+							</p>
+							<p class="texte-xs fontbold texte-center ">Plomb-2:{{shipment.tract1}}->{{shipment.plomb1}}->
+								{{shipment.tract1}}
+							</p>
+						{% endif %}
+						<p class="texte-xs fontbold texte-center">Tracteur:{{shipment.tractorPlate}}
+						</p>
+
+
+						{% if shipment.tract1 == 0 %}
+
+							<p class="text-xs fontbold texte-center ">Trailer:
+								{{shipment.trailerPlate}}
+							</p>
+						{% else %}
+
+							<p class="texte-xs fontbold texte-center ">Caisse Mobile 1:
+								{{shipment.trailerPlate}}
+							</p>
+							<p class="texte-xs fontbold texte-center ">Caisse Mobile 2:
+								{{shipment.tract1}}
+							</p>
+
+						{% endif %}
+
+						<p class="texte-xs  texte-center ppositions">
+							{{shipment.TypeLoading.name}}
+						</p>
+					</div>
+					<div class="div2">
+						<div class="div2-1 bord-top ">
+							<div>
+								<p class="text-xs-custom">14 Prescriptions d'affranchissement
+								</p>
+								<p class="text-xs-custom pl">
+									Instructions as to payment for carriage</p>
+							</div>
+							<div class="div200 ">
+								<div class="div24"></div>
+								<p class="text-xs-custom div25 ">
+									Franco/Carriage paid</p>
+							</div>
+							<div class="div200 ">
+								<div class="div24"></div>
+								<p class="text-xs-custom div25 ">
+									Non franco/Carriage forward</p>
+							</div>
+						</div>
+
+					</div>
+					<div class="div-container">
+						<div>
+							<p class="text-xs-custom">21 Etabli à</p>
+							<p class="text-xs-custom pl">Established in</p>
+						</div>
+						<div class="divgridcols2">
+							<p class="text-xs-custom  p-personnelle">
+								Le</p>
+							<p class="text-xs-custom p-personnelle1 ">
+								On</p>
+						</div>
+
+					</div>
+
+
+				</div>
+				<div class="gridrows207010 ">
+					<div class="   ">
+						<p class="text-xs-custom">19-Conventions particulieres</p>
+						<p class="text-xs-custom  pl-11">
+							Special agreements
+						</p>
+					</div>
+					<div class="col-grid-4 bord-black">
+						<div class="grid-rows15304510">
+							<div class="bord-black ">
+								<p class="text-xs-custom">20 A payer par
+								</p>
+								<p class="text-xs-custom  ">To be paid by
+								</p>
+							</div>
+							<div class="bord-black  div20">
+								<div>
+									<p class="text-xs-custom">
+										Prix de transport
+									</p>
+									<p class="text-xs-custom">
+										Carriage charges</p>
+								</div>
+								<div>
+									<p class="text-xs-custom ">Reductions</p>
+									<p class="text-xs-custom">Deductions</p>
+								</div>
+
+							</div>
+							<div class="grid-rows204040 bord-black">
+								<div>
+									<p class="text-xs-custom ">Solde/Balance</p>
+
+								</div>
+								<div class=" ">
+									<p class="text-xs-custom ">Supplements</p>
+									<p class="text-xs-custom ">Supplem.charges:
+									</p>
+								</div>
+								<div class="">
+									<p class="text-xs-custom ">Frais accessoires</p>
+									<p class="text-xs-custom ">Other charges:
+									</p>
+								</div>
+							</div>
+							<div class="bord-black bord-top bord-bottom">
+								<p class="text-xs-custom">
+									Total</p>
+							</div>
+						</div>
+						<div class="bord-black grid-rows15304515 ">
+							<div class="bord-black  bord-bottom  bord-top ">
+								<p class="text-xs-custom">
+									Expediteur
+								</p>
+								<p class="text-xs-custom">
+									Sender
+								</p>
+							</div>
+							<div class="bord-black div-gridcols2  ">
+								<div class="bord-black  "></div>
+								<div class="bord-black   "></div>
+							</div>
+							<div class="bord-black div-gridcols2 bord-top ">
+								<div class="border-black"></div>
+							</div>
+							<div class="bord-black div-gridcols2 bord-top bord-bottom">
+								<div class="bord-black"></div>
+							</div>
+						</div>
+						<div class="grid-rows15304510 ">
+							<div class="bord-black bord-bottom">
+								<p class="text-xs-custom">
+									Monnaie/Currency
+								</p>
+							</div>
+							<div class="bord-black div-gridcols2 ">
+								<div class="bord-black "></div>
+							</div>
+							<div class="bord-black div-gridcols2 bord-top  ">
+								<div class=" "></div>
+							</div>
+							<div class="bord-black div-gridcols2 bord-bottom bord-top ">
+								<div class=" "></div>
+							</div>
+						</div>
+						<div class="grid-rows15304510 ">
+							<div class=" bord-bottom">
+								<p class="text-xs-custom">Destinataire</p>
+								<p class="text-xs-custom">Consigne</p>
+							</div>
+							<div class=" div-gridcols2 ">
+								<div class=""></div>
+							</div>
+							<div class=" div-gridcols2  bord-top">
+								<div class="  "></div>
+							</div>
+							<div class=" div-gridcols2  bord-bottom bord-top ">
+								<div class=" "></div>
+							</div>
+						</div>
+					</div>
+					<div class=" border-black border-b">
+						<p class="text-xs-custom">15- Remboursement/Cash on delivery</p>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="divsignaturecols bord-bottom boder-lee ">
+				<div class=" boder-le divrelativesignature  ">
+					<p class="text-xs-custom">22</p>
+					<p class="pabsolute text-xs-custom ">
+						Signature et timbre de l'expediteur
+						<br>
+						Signature and of the sender
+					</p>
+
+				</div>
+				<div class=" boder-le divrelativesignature ">
+					<p class="text-xs-custom">23</p>
+					<p class="pabsolute  text-xs-custom ">
+						Signature et timbre du transporteur
+						<br>
+						Signature and of the carrier
+					</p>
+				</div>
+				<div class="  dernierdiv boder-le  ">
+					<div>
+						<p class="text-xs-custom">
+							24 Marchandises reçues/Goods received
+						</p>
+					</div>
+					<div class="text-xs-custom dergrid  ">
+						<div class="texte-center">
+							<p>Lieu</p>
+							<p>Place</p>
+						</div>
+						<div class=" texte-center divrelativesignature">
+							<p class="dpabsolute1">Le</p>
+							<p class="dpabsolute2  ">On</p>
+						</div>
+						<div class="texte-center ">
+							<p class="text-xs-custom">20</p>
+						</div>
+					</div>
+					<div class="dpabsolute3  ">
+						<p class="text-xs-custom">Signature et timbre du destinataire</p>
+						<p class="text-xs-custom">Signature and stamp of the carrier</p>
+					</div>
+				</div>
+
+
+			</div>
+
+
+		</div>
+
+
+	{% endif %}
+
+{% endblock %}
