@@ -18,7 +18,7 @@ class TransporteurType extends AbstractType
                 'label' => "Nom Transporteur",
                 'attr' => [
                     'class' => $baseInputClass,
-                    'placeholder' => "Entre Transporteur"
+                    'placeholder' => "Nom du Transporteur"
                 ]
             ])
             ->add('address', TextType::class, [

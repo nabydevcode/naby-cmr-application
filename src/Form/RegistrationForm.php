@@ -19,52 +19,49 @@ class RegistrationForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $baseInputClass = 'form-input block w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600';
-        $baseSelectClass = 'form-select block w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600';
-
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => "Email",
                 'attr' => [
                     'class' => $baseInputClass,
-                    'placeholder' => 'Votre Email'
-                ],
+                    'placeholder' => "Entrer votre Email"
+                ]
             ])
             ->add('username', TextType::class, [
-                'label' => 'Username',
+                'label' => 'Pseudo',
                 'attr' => [
                     'class' => $baseInputClass,
-                    'placeholder' => 'Username'
-                ],
+                    'placeholder' => 'Pseudo'
+                ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions générales.',
                     ]),
                 ],
+                'label' => 'Accepter les conditions générales'
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'class' => $baseInputClass
+                    'class' => $baseInputClass,
+                    'placeholder' => 'votre mots de pass'
+
                 ],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
+                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

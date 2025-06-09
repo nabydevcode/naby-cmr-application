@@ -1,0 +1,10 @@
+<h1> Activer votre compte</h1>
+<p>Bonjour {{ user.username }}</p>
+<p> Votre inscriptions sur le site nabytoure.com (CmrT) a valider en cliquant sur ce lien ci-dessous: </p>
+<p>
+    <a href="{{ absolute_url(path('verify_user', {'token': token})) }}">
+        Vérifier votre compte
+    </a>
+</p>
+
+<p> ce lien expirera dans 3 heures </p>

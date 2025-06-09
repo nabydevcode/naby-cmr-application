@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Shipment;
 
+use App\Repository\ShipmentRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Users;
 use App\Form\RechercheType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use App\Form\ShipmentType;
@@ -36,18 +38,22 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class MainController extends AbstractController
 {
 
+
     public function __construct(private RequestStack $requestStack)
     {
 
     }
     #[Route('/main', name: 'app_main')]
 
-    public function index(EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    public function index(Security $security): Response
     {
 
 
-
-
+        $user = $security->getUser();
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);
@@ -58,15 +64,23 @@ class MainController extends AbstractController
 
     #[Route('/main/formulaire', name: 'app_main_formulaire', methods: ['GET', 'POST'])]
 
-    public function formulaire(Request $request, EntityManagerInterface $em): Response
+    public function formulaire(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        $user = $security->getUser();
 
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $shipment = new Shipment();
+
         $form = $this->createForm(ShipmentType::class, $shipment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $shipment->setCreator($user);
             $em->persist($shipment);
             $em->flush();
 
@@ -79,21 +93,29 @@ class MainController extends AbstractController
     /*  pour afficher le cmr creer  en fonction de L'ID donner   */
     #[Route('/shipment/{id}', name: 'shipment_show', methods: ['GET', 'POST'])]
 
-    public function show(Shipment $shipment): Response
+    public function show(Shipment $shipment, Security $security): Response
     {
 
-
+        $user = $security->getUser();
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('main/show.html.twig', ['shipment' => $shipment]);
     }
     #[Route('/shipment/update/{id}', name: 'shipment_update', methods: ['GET', 'POST'])]
 
 
-    public function update(Shipment $shipment, Request $request, EntityManagerInterface $em): Response
+    public function update(Shipment $shipment, Request $request, EntityManagerInterface $em, Security $security): Response
     {
 
-
-
-
+        $user = $security->getUser();
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $form = $this->createForm(ShipmentType::class, $shipment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -108,21 +130,27 @@ class MainController extends AbstractController
 
     }
     #[Route('/shipment/print/cmr/{id}', name: 'shipment_pdf')]
-
-    public function generatePdf(Shipment $shipment): Response
+    public function generatePdf(Shipment $shipment, Security $security): Response
     {
-
-
-
+        $user = $security->getUser();
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $url = $this->generateUrl('shipment_print_pdf', ['id' => $shipment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $filePath = $this->getParameter('kernel.project_dir') . '/public/shipment_' . $shipment->getId() . '.pdf';
-
-
-
+        /*  Browsershot::url($url)
+             ->setNodeBinary('/opt/homebrew/bin/node')
+             ->setNpmBinary('/opt/homebrew/bin/npm')
+             ->waitUntilNetworkIdle()
+             ->format('A4')
+             ->save($filePath); */
         Browsershot::url($url)
-            ->setNodeBinary('/opt/homebrew/bin/node')
-            ->setNpmBinary('/opt/homebrew/bin/npm')
+            ->setNodeBinary('/usr/bin/node')
+            ->setNpmBinary('/usr/bin/npm')
+            ->setChromePath('/usr/bin/google-chrome')
             ->waitUntilNetworkIdle()
             ->format('A4')
             ->save($filePath);
@@ -146,6 +174,48 @@ class MainController extends AbstractController
                }  */
         return $this->render('main/cmr.html.twig', ['shipment' => $shipment]);
     }
+
+
+
+    #[Route('/main/plomb', name: 'main_plomb', methods: ['GET'])]
+    public function listShipment(Security $security, EntityManagerInterface $entityManagerInterface): Response
+    {
+        $user = $security->getUser();
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        $shipment = $entityManagerInterface->getRepository(Shipment::class)->findBy(['creator' => $user]);
+
+
+        return $this->render('main/list.html.twig', ['shipments' => $shipment]);
+    }
+
+    #[Route('/plomb', name: 'general_plomb', methods: ['GET'])]
+    public function plomb(Security $security, ShipmentRepository $shipmentRepository): Response
+    {
+
+        $user = $security->getUser();
+
+        // Vérifie si l'utilisateur est connecté et a vérifié son email
+        if (!$user || !$user->isVerify()) {
+            /*  $this->addFlash('error', 'Vous devez vérifier votre email ou vous connecter pour accéder à cette page.'); */
+            return $this->redirectToRoute('app_login');
+        }
+        // Vérifie que l'utilisateur a le rôle ADMIN
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        // Récupère tous les Shipments
+        $plomb = $shipmentRepository->findAll();
+
+        // Correction du rendu du template
+        return $this->render('main/plomb.html.twig', [
+            'plombs' => $plomb // Correction de la clé du tableau
+        ]);
+    }
+
+
 
 
 }

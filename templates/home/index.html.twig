@@ -1,6 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}Accueil
 {% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+	<div
+		class="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+		<!-- Section principale -->
+		<div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md text-center w-full">
+			<h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center justify-center">
+				Créez facilement votre propre
+				<img src="{{ asset('images/toure.png') }}" alt="CMR" class="w-10 h-10 ml-2">
+				grâce à notre service dédié ! .
+			</h1>
+
+			<!-- Image du camion -->
+			<div class="flex justify-center items-center w-full">
+				<img src="{{ asset('images/acceuil.png') }}" alt="Camion de livraison" class="w-[98%] h-auto rounded-lg shadow-md">
+			</div>
+
+			<!-- Bouton d'action -->
+			<div class="mt-6">
+				<a href="{{ path('app_main') }}" class="w-full bg-gray-900 hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
+					Menu Principale
+				</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

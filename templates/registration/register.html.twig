@@ -1,66 +1,88 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
+{% block title %}Inscription
 {% endblock %}
 
 {% block body %}
-	{% for flash_error in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-	{% endfor %}
+	<div class="min-h-screen flex items-center justify-center bg-gray-100">
+		<div class="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
 
+			<h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Inscription</h1>
 
-	<div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 ">
-		<h2 class="text-center font-bold text-xl">
-			S'inscrire</h2>
-		{{ form_start(registrationForm, {'attr': {'class': 'space-y-4'}}) }}
+			{% if form_errors(registrationForm) %}
+				<div class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+					{{ form_errors(registrationForm) }}
+				</div>
+			{% endif %}
 
-		<!-- Email -->
-		<div>
-			<label for="{{ registrationForm.email.vars.id }}" class="block text-sm font-medium text-gray-700">
-				{{ registrationForm.email.vars.label }}
-			</label>
-			{{ form_widget(registrationForm.email, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:ring
-        focus:ring-blue-500'}}) }}
-			{{ form_errors(registrationForm.email) }}
-		</div>
-		<div>
-			<label for="{{ registrationForm.username.vars.id }}" class="block text-sm font-medium text-gray-700">
-				{{ registrationForm.username.vars.label }}
-			</label>
-			{{ form_widget(registrationForm.username, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded
-        focus:ring
-        focus:ring-blue-500'}}) }}
-			{{ form_errors(registrationForm.username) }}
-		</div>
+			{{ form_start(registrationForm, {'attr': {'class': 'space-y-4'}}) }}
 
-		<!-- Password -->
-		<div>
-			<label for="{{ registrationForm.plainPassword.vars.id }}" class="block text-sm font-medium text-gray-700">
-				{{ registrationForm.plainPassword.vars.label | default('Mot de passe') }}
-			</label>
-			{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded
-        focus:ring focus:ring-blue-500'}}) }}
-			{{ form_errors(registrationForm.plainPassword) }}
-		</div>
+			<!-- Email -->
+			<div>
+				<label for="{{ registrationForm.email.vars.id }}" class="block text-sm font-medium text-gray-700">
+					{{ registrationForm.email.vars.label }}
+				</label>
+				{{ form_widget(registrationForm.email, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-500'}}) }}
+				{{ form_errors(registrationForm.email) }}
+			</div>
 
-		<!-- Agree Terms -->
-		<div class="flex items-center space-x-2">
-			{{ form_widget(registrationForm.agreeTerms) }}
-			<label for="{{ registrationForm.agreeTerms.vars.id }}" class="text-sm text-gray-700">
-				J'accepte les termes et conditions
-			</label>
-			{{ form_errors(registrationForm.agreeTerms) }}
-		</div>
+			<!-- Username (Pseudo) -->
+			<div>
+				<label for="{{ registrationForm.username.vars.id }}" class="block text-sm font-medium text-gray-700">
+					{{ registrationForm.username.vars.label }}
+				</label>
+				{{ form_widget(registrationForm.username, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-500'}}) }}
+				{{ form_errors(registrationForm.username) }}
+			</div>
 
-		<!-- Submit Button -->
-		<div>
-			<button type="submit" class="w-full bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-900 transition duration-300">
+			<!-- Password -->
+			<div>
+				<label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+				<div class="relative">
+					{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500', 'id': 'password'}}) }}
+					<button type="button" id="togglePassword" class="absolute inset-y-0 right-0 px-3 py-2 text-sm text-gray-600 hover:text-blue-600 focus:outline-none">
+						Afficher
+					</button>
+				</div>
+				{{ form_errors(registrationForm.plainPassword) }}
+			</div>
+
+			<!-- Agree Terms -->
+			<div class="flex items-center space-x-2">
+				{{ form_widget(registrationForm.agreeTerms) }}
+				<label for="{{ registrationForm.agreeTerms.vars.id }}" class="text-sm text-gray-700">
+					J'accepte les termes et conditions
+				</label>
+				{{ form_errors(registrationForm.agreeTerms) }}
+			</div>
+
+			<!-- Submit Button -->
+			<button type="submit" class="w-full bg-gray-900 hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
 				S'inscrire
 			</button>
+
+			{{ form_end(registrationForm) }}
 		</div>
+	{% endblock %}
 
-		{{ form_end(registrationForm) }}
-	</div>
+	{% block javascripts %}
+		{{ parent() }}
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+console.log("Script chargé !");
 
+const toggleBtn = document.getElementById("togglePassword");
+const passwordField = document.getElementById("password");
 
-{% endblock %}
+if (toggleBtn && passwordField) {
+toggleBtn.addEventListener("click", function () {
+const isHidden = passwordField.type === "password";
+passwordField.type = isHidden ? "text" : "password";
+toggleBtn.textContent = isHidden ? "Masquer" : "Afficher";
+});
+} else {
+console.error("Élément non trouvé !");
+}
+});
+		</script>
+	{% endblock %}

@@ -6,5 +6,50 @@
 {% block body %}
 
 
-<h1> Bienvenue sur la page de Company ou la societe </h1>
+	<div
+		class="flex flex-col items-center space-y-4  pt-10">
+		<!-- Lien au-dessus -->
+		<div>
+			<a href="{{ path('app_type_loading_formulaire') }}" class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-4 rounded-lg text-center transition">
+				Ajouter un nouveau Expediteurs
+			</a>
+		</div>
+
+		<div class="container flex justify-center items-center  px-4 py-8">
+			<table class="border-collapse border border-gray-400 mx-auto max-w-screen-lg shadow-lg rounded-lg overflow-hidden">
+				<thead class="bg-gray-200">
+					<tr>
+						<th class="border border-gray-300 p-4 text-center">ID</th>
+						<th class="border border-gray-300 p-4 text-center">Expediteurs</th>
+						<th class="border border-gray-300 p-4 text-center">Action</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-300">
+					{% for companys in company %}
+						<tr class="hover:bg-gray-100 transition duration-300">
+							<td class="border border-gray-300 p-4 text-center">{{ companys.id }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ companys.name }}</td>
+							<td class="border border-gray-300 p-4 text-center">
+								<div class="flex justify-center space-x-2">
+									<div class="flex justify-center space-x-2">
+										<a href="#" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
+											Edit
+										</a>
+										<a href="{{path('company_update', {'id':companys.id})}}" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
+											Modifier
+										</a>
+
+
+										<a href="#" type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
+											Supprimer
+										</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}

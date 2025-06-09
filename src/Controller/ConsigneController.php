@@ -40,6 +40,11 @@ final class ConsigneController extends AbstractController
     {
         $consi = $consigne->findAll();
 
+        if (!$consi) {
+            $this->addFlash('warning', "veiller ajouter un Destinateur ");
+            return $this->redirectToRoute('consigne_formulaire');
+        }
+
         return $this->render('consigne/index.html.twig', ['consigne' => $consi]);
 
     }
@@ -58,6 +63,4 @@ final class ConsigneController extends AbstractController
             'consigne' => $consigne
         ]);
     }
-
-
 }

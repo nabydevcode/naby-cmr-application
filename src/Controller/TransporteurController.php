@@ -38,7 +38,12 @@ final class TransporteurController extends AbstractController
 
     public function tranporteur(TransporteurRepository $transporteurType): Response
     {
+
         $tranp = $transporteurType->findAll();
+        if (!$tranp) {
+            $this->addFlash('warning', "Veiller ajouter un Transporteur ");
+            return $this->redirectToRoute('app_transporteur_formulaire');
+        }
 
         return $this->render('transporteur/index.html.twig', ['transporteurs' => $tranp]);
     }

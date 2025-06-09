@@ -17,6 +17,10 @@ final class DeliveryLocationController extends AbstractController
     public function index(DeliveryLocationRepository $deliveryLocationRepository): Response
     {
         $delivery = $deliveryLocationRepository->findAll();
+        if (!$delivery) {
+            $this->addFlash('warning', "veillez ajouter un lieu de livaison ");
+            return $this->redirectToRoute('app_delivery_formulaire');
+        }
         return $this->render('delivery_location/index.html.twig', ['delivery' => $delivery]);
     }
 

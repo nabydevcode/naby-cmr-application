@@ -5,46 +5,57 @@
 
 {% block body %}
 
-<div class="container flex justify-center items-center min-h-screen px-4 py-8">
-    <table class="border-collapse border border-gray-400 mx-auto max-w-screen-lg shadow-lg rounded-lg overflow-hidden">
-        <thead class="bg-gray-200">
-            <tr>
-                <th class="border border-gray-300 p-4 text-center">ID</th>
-                <th class="border border-gray-300 p-4 text-center">transporteur</th>
-                <th class="border border-gray-300 p-4 text-center">Addres</th>
-                <th class="border border-gray-300 p-4 text-center">Pays</th>
-                <th class="border border-gray-300 p-4 text-center">Action</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-300">
-            {% for transporteur in transporteurs %}
-            <tr class="hover:bg-gray-100 transition duration-300">
-                <td class="border border-gray-300 p-4 text-center">{{ transporteur.id }}</td>
-                <td class="border border-gray-300 p-4 text-center">{{ transporteur.name }}</td>
-                <td class="border border-gray-300 p-4 text-center">{{ transporteur.address }}</td>
-                <td class="border border-gray-300 p-4 text-center">{{ transporteur.country }}</td>
-                <td class="border border-gray-300 p-4 text-center">
-                    <div class="flex justify-center space-x-2">
-                        <a href="#" type="button"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
-                            Edit
-                        </a>
-                        <a href="{{path('app_transporteur_update', {'id': transporteur.id})}}" type="button"
-                            class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
-                            Modifier
-                        </a>
+<div class="flex flex-col items-center space-y-4  pt-10">
+    <!-- Lien au-dessus -->
+    <div>
+        <a href="{{ path('app_transporteur_formulaire') }}"
+            class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-4 rounded-lg text-center transition">
+            Ajouter un nouveau Transporteur
+        </a>
+    </div>
 
-
-                        <a href="#" type="button"
-                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
-                            Supprimer
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Tableau centré en dessous -->
+    <div class="container flex justify-center items-center px-4 py-8">
+        <table
+            class="border-collapse border border-gray-400 mx-auto max-w-screen-lg shadow-lg rounded-lg overflow-hidden">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="border border-gray-300 p-4 text-center">ID</th>
+                    <th class="border border-gray-300 p-4 text-center">Transporteur</th>
+                    <th class="border border-gray-300 p-4 text-center">Adresse</th>
+                    <th class="border border-gray-300 p-4 text-center">Pays</th>
+                    <th class="border border-gray-300 p-4 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-300">
+                {% for transporteur in transporteurs %}
+                <tr class="hover:bg-gray-100 transition duration-300">
+                    <td class="border border-gray-300 p-4 text-center">{{ transporteur.id }}</td>
+                    <td class="border border-gray-300 p-4 text-center">{{ transporteur.name }}</td>
+                    <td class="border border-gray-300 p-4 text-center">{{ transporteur.address }}</td>
+                    <td class="border border-gray-300 p-4 text-center">{{ transporteur.country }}</td>
+                    <td class="border border-gray-300 p-4 text-center">
+                        <div class="flex justify-center space-x-2">
+                            <a href="#"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
+                                Edit
+                            </a>
+                            <a href="{{ path('app_transporteur_update', {'id': transporteur.id}) }}"
+                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
+                                Modifier
+                            </a>
+                            <a href="#"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">
+                                Supprimer
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+
 
 {% endblock %}

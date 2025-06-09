@@ -32,8 +32,7 @@ class Shipment
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $tourNumber = null;
+
 
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeImmutable $arrivalTime = null;
@@ -67,6 +66,17 @@ class Shipment
 
     #[ORM\Column]
     private ?int $quantite2 = null;
+
+    #[ORM\ManyToOne(inversedBy: 'shipments')]
+    private ?Users $creator = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -145,17 +155,7 @@ class Shipment
         return $this;
     }
 
-    public function getTourNumber(): ?string
-    {
-        return $this->tourNumber;
-    }
 
-    public function setTourNumber(string $tourNumber): static
-    {
-        $this->tourNumber = $tourNumber;
-
-        return $this;
-    }
 
     public function getArrivalTime(): ?\DateTimeImmutable
     {
@@ -285,6 +285,30 @@ class Shipment
     public function setQuantite2(int $quantite2): static
     {
         $this->quantite2 = $quantite2;
+
+        return $this;
+    }
+
+    public function getCreator(): ?Users
+    {
+        return $this->creator;
+    }
+
+    public function setCreator(?Users $creator): static
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

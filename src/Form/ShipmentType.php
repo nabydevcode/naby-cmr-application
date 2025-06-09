@@ -121,13 +121,7 @@ class ShipmentType extends AbstractType
                     'class' => $baseSelectClass,
                 ],
             ])
-            ->add('tourNumber', TextType::class, [
-                'label' => 'Numéro de Tour',
-                'attr' => [
-                    'class' => $baseInputClass,
-                    'placeholder' => 'Entrez le numéro de tour',
-                ],
-            ])
+
             ->add('transporteur', EntityType::class, [
                 'label' => 'Transporteur',
                 'class' => Transporteur::class,
@@ -136,6 +130,14 @@ class ShipmentType extends AbstractType
                 'attr' => [
                     'class' => $baseInputClass,
 
+                ],
+            ])
+            ->add('arrivalTime', TimeType::class, [
+                'label' => "Heure d'Arrivée",
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => $baseInputClass,
+                    'placeholder' => "Sélectionnez l'heure d'arrivée",
                 ],
             ])
             ->add('departureTime', TimeType::class, [
@@ -147,14 +149,7 @@ class ShipmentType extends AbstractType
                     'placeholder' => "Sélectionnez l'heure de départ",
                 ],
             ])
-            ->add('arrivalTime', TimeType::class, [
-                'label' => "Heure d'Arrivée",
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => $baseInputClass,
-                    'placeholder' => "Sélectionnez l'heure d'arrivée",
-                ],
-            ])
+
             ->add('sealNumber', TextType::class, [
                 'label' => 'Numéro de Scellé',
                 'attr' => [

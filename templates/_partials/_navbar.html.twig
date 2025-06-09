@@ -7,16 +7,32 @@
 				<img class="h-8" src="{{ asset('images/camion.jpg') }}" alt="Logo">
 				<span class="text-lg font-semibold ml-2">MyCmrT</span>
 			</div>
+			<div class="flex items-center">
+
+				<span class="text-lg font-semibold ml-2">
+					{% if app.user and not app.user.isVerify %}
+
+						<a href="{{ path('resend_verif') }}" class="mt-4 inline-block bg-white text-red-500 px-4 py-2 rounded-lg font-bold shadow-md hover:bg-gray-200 transition">
+							🔄 Renvoyer l'email de vérification
+						</a>
+
+
+					{% endif %}
+				</span>
+			</div>
+
 
 			<!-- Navigation Links -->
 			<div class="hidden md:flex space-x-6">
 				<a href="{{path('app_main')}}" class="hover:text-indigo-400 transition">Home</a>
 				<a href="#" class="hover:text-indigo-400 transition">Contact</a>
-				<a href="#" class="hover:text-indigo-400 transition">M'inscrire</a>
+
+
 				{% if not app.user %}
-					<a href="#" class="hover:text-indigo-400 transition">Me-Connecter</a>
+					<a href="{{path('app_register')}}" class="hover:text-indigo-400 transition">M'inscrire</a>
+					<a href="{{path('app_login')}}" class="hover:text-indigo-400 transition">Me-Connecter</a>
 				{% else %}
-					<a href="#" class="hover:text-indigo-400 transition">Deconnecter</a>
+					<a href="{{path('app_logout')}}" class="hover:text-indigo-400 transition">Deconnecter</a>
 				{% endif %}
 
 
@@ -24,20 +40,20 @@
 
 			<!-- Profile Dropdown -->
 			<div class="relative hidden md:block">
-				<button
-					id="profile-menu" class="flex items-center space-x-2 focus:outline-none">{# {% if app.user %}
-												<img class="w-10 h-10 rounded-full" src="{{ asset('images/toure.png') }}" alt="User">
-												<span class="hidden md:inline">
-						
-													{{app.user.username}}
-						
-												</span>
-											{% endif %} #}
+				<button id="profile-menu" class="flex items-center space-x-2 focus:outline-none">
+					{% if app.user %}
+						<img class="w-10 h-10 rounded-full" src="{{ asset('images/toure.png') }}" alt="User">
+						<span class="hidden md:inline">
+
+							{{app.user.username}}
+
+						</span>
+					{% endif %}
 				</button>
 				<div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-700 rounded-md shadow-lg">
 					<a href="#" class="block px-4 py-2 hover:bg-gray-200">Profile</a>
 					<a href="#" class="block px-4 py-2 hover:bg-gray-200">Settings</a>
-					<a href="#" class="block px-4 py-2 hover:bg-gray-200">Logout</a>
+					<a href="{{path('app_logout')}}" class="block px-4 py-2 hover:bg-gray-200">Logout</a>
 				</div>
 			</div>
 

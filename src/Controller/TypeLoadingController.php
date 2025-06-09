@@ -38,7 +38,13 @@ final class TypeLoadingController extends AbstractController
     #[Route('/type/loading', name: 'app_type_loading', methods: ['GET', 'POST'])]
     public function fullLoadind(Request $request, TypeLoadingRepository $typeLoadingRepository): Response
     {
+
         $typeLoad = $typeLoadingRepository->findAll();
+        if (!$typeLoad) {
+            $this->addFlash('warning', "veillez aujouter un type de chargement ");
+            return $this->redirectToRoute('app_type_loading_formulaire');
+
+        }
 
         return $this->render('type_loading/index.html.twig', ['type_loading' => $typeLoad]);
 

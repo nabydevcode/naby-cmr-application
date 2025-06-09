@@ -17,17 +17,14 @@ final class RechercheController extends AbstractController
     {
         $form = $this->createForm(RechercheType::class);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $ref = $data['ref'];
-
             // Rediriger vers la route qui affichera le résultat
             return $this->redirectToRoute('app_resultat', ['ref' => $ref]);
         }
-
         return $this->render('main/recherche.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 

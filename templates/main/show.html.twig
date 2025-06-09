@@ -9,7 +9,7 @@
 			<a href="{{ path('shipment_update', { id: shipment.id }) }}" class="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg font-semibold transition duration-300">
 				Update
 			</a>
-			<a href="{{ path('shipment_pdf', { id: shipment.id }) }}" class="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg font-semibold transition duration-300 ml-4">
+			<a href="{{ path('shipment_pdf', { id: shipment.id }) }}" target="_blank" class="bg-gray-800 hover:bg-gray-900 text-white py-2 px-4 rounded-lg font-semibold transition duration-300 ml-4">
 				Print-PDF
 			</a>
 		</div>
@@ -119,7 +119,7 @@
 				<div class="section1">
 					<div class="  bord-bottom ">
 						<p class="text-xs-custom">4 - Lieu et date de la prise en charge de la marchandise (Lieu, Pays,
-																																																																																																																																																																																																																																																																																																																																																																																																														date)</p>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												date)</p>
 						<p class="text-xs-custom">Place and date of taking over the goods (place, country, date)</p>
 
 						<p class=" texte-center fontbold ">
@@ -178,7 +178,7 @@
 								<p class="text-xs-custom">Number of packages</p>
 								<p class="texte-xs fontbold   texte-center">
 									{% if shipment.TypeLoading.id == 1 %}
-										{% if shipment.quantite2 == 0 %}
+										{% if shipment.quantite2 == 0 and shipment.tract1 == 0  %}
 											{{shipment.quantity}}</p>
 									{% else %}
 										{{shipment.quantity}}/{{shipment.quantite2}}</p>
@@ -268,16 +268,15 @@
 					<p class="texte-xs fontbold texte-center">Reference:{{shipment.numberReference}}
 					</p>
 
-					{% if shipment.plomb1 == 0 %}
+					{% if shipment.plomb1 == 0 and shipment.tract1 == 0 %}
 						<p class="texte-xs fontbold texte-center ">Plomb:{{shipment.sealNumber}}
 						</p>
 					{% else %}
-						<p class="texte-xs fontbold texte-center ">Plomb-1:
-
-							{{shipment.sealNumber}}->{{shipment.trailerPlate}}->{{shipment.quantity}}
+						<p class="texte-xs fontbold texte-center ">Plomb N°1:
+							{{shipment.sealNumber}}==>{{shipment.trailerPlate}}==>{{shipment.quantity}}
 						</p>
-						<p class="texte-xs fontbold texte-center ">Plomb-2:{{shipment.tract1}}->{{shipment.plomb1}}->
-							{{shipment.tract1}}
+						<p class="texte-xs fontbold texte-center ">Plomb N°2:{{shipment.plomb1}}==>{{shipment.tract1}}==>
+							{{shipment.quantite2}}
 						</p>
 					{% endif %}
 					<p class="texte-xs fontbold texte-center">Tracteur:{{shipment.tractorPlate}}
@@ -291,10 +290,10 @@
 						</p>
 					{% else %}
 
-						<p class="texte-xs fontbold texte-center ">Caisse Mobile 1:
+						<p class="texte-xs fontbold texte-center ">Swap N°1 :
 							{{shipment.trailerPlate}}
 						</p>
-						<p class="texte-xs fontbold texte-center ">Caisse Mobile 2:
+						<p class="texte-xs fontbold texte-center ">Swap N°2:
 							{{shipment.tract1}}
 						</p>
 
@@ -495,7 +494,4 @@
 
 
 		</div>
-
-
-	</div>
-{% endblock %}
+	{% endblock %}

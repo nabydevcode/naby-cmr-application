@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen flex items-center justify-center bg-gray-100">
+		<div class="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+			<h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Connexion</h1>
+
+			<form method="post" class="space-y-4">
+				{% if error %}
+					<div class="p-3 bg-red-100 text-red-700 rounded">
+						{{ error.messageKey|trans(error.messageData, 'security') }}
+						<p>
+							Votre identifiant ne sont pas correctes</p>
+
+					</div>
+				{% endif %}
+
+				{% if app.user %}
+					<div class="p-3 bg-green-100 text-green-700 rounded text-center">
+						vous etes Connecté en tant que
+						{{ app.user.userIdentifier }},
+						<a href="{{ path('app_logout') }}" class="text-blue-600 hover:underline">Logout</a>
+					</div>
+				{% endif %}
+
+				<div>
+					<label for="inputEmail" class="block text-sm font-medium text-gray-700">Email ou Nom d'utilisateur
+					</label>
+					<input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" autocomplete="email" required autofocus>
+				</div>
+
+				<div class="relative">
+					<label for="inputPassword" class="block text-sm font-medium text-gray-700">Password</label>
+					<input
+					type="password" name="password" id="inputPassword" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 pr-10" autocomplete="current-password" required>
+
+					<!-- Bouton Afficher/Masquer -->
+					<button type="button" id="togglePassword" class="absolute inset-y-0 right-3  px-3 pt-2 mt-2 text-sm text-gray-600 hover:text-blue-600 focus:outline-none">
+						Afficher
+					</button>
+				</div>
+
+
+				<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+				<div class="flex items-center">
+					<input type="checkbox" name="_remember_me" id="remember_me" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+					<label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+				</div>
+
+				<button type="submit" class="w-full bg-gray-900 hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
+					Sign in
+				</button>
+				<p>
+					<a href="{{path('forgotten_password')}}" class="w-full bg-gray-300 hover:bg-gray-300  underline">
+						Mot-de-pas oublier</a>
+				</p>
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+const toggleBtn = document.getElementById("togglePassword");
+const passwordField = document.getElementById("inputPassword");
+
+toggleBtn.addEventListener("click", function () {
+if (passwordField.type === "password") {
+passwordField.type = "text";
+toggleBtn.textContent = "Masquer";
+} else {
+passwordField.type = "password";
+toggleBtn.textContent = "Afficher";
+}
+});
+});
+	</script>
+{% endblock %}
