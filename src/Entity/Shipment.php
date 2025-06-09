@@ -68,6 +68,7 @@ class Shipment
     private ?int $quantite2 = null;
 
     #[ORM\ManyToOne(inversedBy: 'shipments')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Users $creator = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
