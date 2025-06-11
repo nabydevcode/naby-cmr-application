@@ -8,6 +8,7 @@ use App\Form\LoadingLocationType;
 use App\Repository\LoadingLocationsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,8 +16,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class LoadingLocationController extends AbstractController
 {
     #[Route('/loading/location', name: 'app_loading_location', methods: ['GET', 'POST'])]
-    public function index(LoadingLocationsRepository $loadingLocationsRepository): Response
+    public function index(LoadingLocationsRepository $loadingLocationsRepository, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
 
         $loading = $loadingLocationsRepository->findAll();
         if (!$loading) {
@@ -29,8 +36,14 @@ final class LoadingLocationController extends AbstractController
     }
     #[Route('/loading/location/update/{id}', name: 'app_loading_update', methods: ['GET', 'POST'])]
 
-    public function update(LoadingLocations $loadingLocations, EntityManagerInterface $entityManagerInterface, Request $request): Response
+    public function update(LoadingLocations $loadingLocations, EntityManagerInterface $entityManagerInterface, Request $request, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $form = $this->createForm(LoadingLocationType::class, $loadingLocations);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -44,8 +57,14 @@ final class LoadingLocationController extends AbstractController
 
 
     #[Route('/loading/formulaire', name: 'app_loading_formualaire', methods: ['GET', 'POST'])]
-    public function formulaire(Request $request, EntityManagerInterface $em): Response
+    public function formulaire(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $loading = new LoadingLocations();
         $form = $this->createForm(LoadingLocationType::class, $loading);
         $form->handleRequest($request);

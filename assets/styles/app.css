@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-body {
+/* body {
     background-color: white;
 }
-
+ */
 .text-xs-custom {
     font-size: 0.5rem;
 }

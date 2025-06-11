@@ -28,7 +28,7 @@ final class CompanyController extends AbstractController
 
         $company = $companyRepository->findAll();
         if (!$company) {
-            $this->addFlash('warning', "veillez ajouter un company");
+            $this->addFlash('warning', "veillez ajouter un Expediteur");
             return $this->redirectToRoute('form_company');
         }
         return $this->render('company/index.html.twig', [

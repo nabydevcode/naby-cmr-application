@@ -48,12 +48,12 @@ class MainController extends AbstractController
     public function index(Security $security): Response
     {
 
+        /* $user = $security->getUser();
 
-        $user = $security->getUser();
         if (!$user || !$user->isVerify()) {
             $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
             return $this->redirectToRoute('app_login');
-        }
+        } */
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);

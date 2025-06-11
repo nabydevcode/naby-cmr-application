@@ -7,6 +7,7 @@ use App\Form\TransporteurType;
 use App\Repository\TransporteurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,15 +15,28 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TransporteurController extends AbstractController
 {
     #[Route('/transporteur', name: 'app_transporteur', methods: ['GET', 'POST'])]
-    public function index(): Response
+    public function index(Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('transporteur/index.html.twig', [
             'controller_name' => 'TransporteurController',
         ]);
     }
     #[Route('/transporteur/formulaire', name: 'app_transporteur_formulaire', methods: ['GET', 'POST'])]
-    public function formulaire(Request $request, EntityManagerInterface $em): Response
+    public function formulaire(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $transport = new Transporteur();
         $form = $this->createForm(TransporteurType::class, $transport);
         $form->handleRequest($request);
@@ -36,8 +50,14 @@ final class TransporteurController extends AbstractController
     }
     #[Route('/transporteur', name: 'app_transporteur', methods: ['GET', 'POST'])]
 
-    public function tranporteur(TransporteurRepository $transporteurType): Response
+    public function tranporteur(TransporteurRepository $transporteurType, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
 
         $tranp = $transporteurType->findAll();
         if (!$tranp) {
@@ -49,8 +69,14 @@ final class TransporteurController extends AbstractController
     }
 
     #[Route('/transporteur/update/{id}', name: 'app_transporteur_update', methods: ['GET', 'POST'])]
-    public function update(Request $request, Transporteur $transporteur, EntityManagerInterface $em): Response
+    public function update(Request $request, Transporteur $transporteur, EntityManagerInterface $em, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $form = $this->createForm(TransporteurType::class, $transporteur);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

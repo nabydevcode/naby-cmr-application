@@ -6,6 +6,7 @@ use App\Entity\Shipment;
 use App\Form\RechercheType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,8 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 final class RechercheController extends AbstractController
 {
     #[Route('/recherche', name: 'app_recherche', methods: ['GET', 'POST'])]
-    public function index(Request $request): Response
+    public function index(Request $request, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $form = $this->createForm(RechercheType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -29,8 +36,14 @@ final class RechercheController extends AbstractController
     }
 
     #[Route('/resultat/{ref}', name: 'app_resultat', methods: ['GET', 'POST'])]
-    public function search(string $ref, EntityManagerInterface $em): Response
+    public function search(string $ref, EntityManagerInterface $em, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         // Recherche en base de données
         $shipment = $em->getRepository(Shipment::class)->findOneBy(['numberReference' => $ref]);
 

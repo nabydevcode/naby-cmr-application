@@ -7,6 +7,7 @@ use App\Form\DeliveryLocationType;
 use App\Repository\DeliveryLocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,8 +15,15 @@ use Symfony\Component\Routing\Attribute\Route;
 final class DeliveryLocationController extends AbstractController
 {
     #[Route('/delivery/location', name: 'app_delivery_location', methods: ['GET', 'POST'])]
-    public function index(DeliveryLocationRepository $deliveryLocationRepository): Response
+    public function index(DeliveryLocationRepository $deliveryLocationRepository, Security $security): Response
     {
+
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $delivery = $deliveryLocationRepository->findAll();
         if (!$delivery) {
             $this->addFlash('warning', "veillez ajouter un lieu de livaison ");
@@ -26,8 +34,14 @@ final class DeliveryLocationController extends AbstractController
 
 
     #[Route('/delivery/formulaire', name: 'app_delivery_formulaire', methods: ['GET', 'POST'])]
-    public function formulaire(Request $request, EntityManagerInterface $em): Response
+    public function formulaire(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $delivery_location = new DeliveryLocation();
         $form = $this->createForm(DeliveryLocationType::class, $delivery_location);
         $form->handleRequest($request);
@@ -40,8 +54,14 @@ final class DeliveryLocationController extends AbstractController
         return $this->render('delivery_location/formulaire.html.twig', ['form' => $form->createView()]);
     }
     #[Route('/delivery/update/{id}', name: 'app_delivery_update', methods: ['GET', 'POST'])]
-    public function update(Request $request, EntityManagerInterface $entityManagerInterface, DeliveryLocation $deliveryLocation): Response
+    public function update(Request $request, EntityManagerInterface $entityManagerInterface, DeliveryLocation $deliveryLocation, Security $security): Response
     {
+        $user = $security->getUser();
+
+        if (!$user || !$user->isVerify()) {
+            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            return $this->redirectToRoute('app_login');
+        }
         $form = $this->createForm(DeliveryLocationType::class, $deliveryLocation);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
