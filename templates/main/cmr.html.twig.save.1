@@ -1,0 +1,209 @@
+
+						<div class=" boder-le  boder-top">
+							<p class="text-xs-custom">16-Transporteur (nom,adress,pays)</p>
+							<p class="text-xs-custom">carrer (name, address, country)</p>
+							<p class="text-xl fontbold texte-center">
+								{{ shipment.transporteur.name}}</p>
+
+						</div>
+					</div>
+
+					<div class="section1">
+						<div class="bord-bottom bord-top">
+							<p class="text-xs-custom">3 - Lieu prévue pour la livraison (Lieu, Pays)</p>
+							<p class="text-xs-custom">Place of delivery of the goods (place, Country)</p>
+
+
+							{% if shipment.consigne.id == 2 %}
+
+								<p class="texte-center fontbold ">
+									D35 ,77950 Montereau-Sur-Le-Jard
+									<br>
+									France
+								</p>
+
+							{% elseif  shipment.consigne.id == 1 %}
+
+								<p class=" text-xl texte-center  ">
+									A5-3 ,77550 Reau
+									<br>
+									France
+								</p>
+							{% elseif  shipment.consigne.id == 3 %}
+								<p class="texte-2xl texte-center">{{ shipment.consigne.name }}</p>
+								<p class="text-xs-custom texte-center  ">
+
+									Allemagne
+								</p>
+							{% endif %}
+						</div>
+						<div class=" border-le  border-ri">
+							<p class="text-xs-custom">17 - Transporteur successifs (nom, adress, pays)</p>
+							<p class="text-xs-custom">Successive carriers (name, address, country)</p>
+						</div>
+
+					</div>
+
+					<div class="section1">
+						<div class="  bord-bottom ">
+							<p class="text-xs-custom">4 - Lieu et date de la prise en charge de la marchandise (Lieu, Pays,
+																																																																																																																																																																																																																																																																																																																																																																																																																						date)</p>
+							<p class="text-xs-custom">Place and date of taking over the goods (place, country, date)</p>
+
+							<p class=" texte-center fontbold ">
+								2 Rue Antoine De Saint-Exupéry
+								<br>
+								77950 Montereau-Sur-Le-Jard
+								<br>
+								France
+							</p>
+
+						</div>
+
+						<div class="border-le  bord-top border-ri">
+							<p class="text-xs-custom">18 - Reserves et observations du transporteur</p>
+							<p class="text-xs-custom">Carriers reservations and observations</p>
+						</div>
+					</div>
+
+					<div class="section1">
+						<div class="border-ri ">
+							<p class="text-xs-custom">5 - Documents annexés</p>
+							<p class="text-xs-custom">Documents attached</p>
+							<p class="texte-xs fontbold texte-center">
+								Heure d'arriver:
+         								{{ shipment.arrivalTime ? shipment.arrivalTime|date('H:i') : 'N/A' }}
+							</p>
+							<p class="texte-xs fontbold texte-center">
+								Heure de départ:
+								{{ shipment.departureTime ? shipment.departureTime|date('H:i') : 'N/A' }}
+							</p>
+
+
+						</div>
+						<div class="border-ri"></div>
+
+					</div>
+					<div class="template-grid85 ">
+						<div class="template-grid60   ">
+							<div class="template-repeate border-ri  bottom-marge ">
+								<div>
+									<p class="text-xs-custom">6-Marque et numero</p>
+									<p class="text-xs-custom">Documents attached</p>
+									<p class="texte-xs fontbold ">
+
+										         {% if shipment.quantite2 == 0 and shipment.trac1 == 0 %}
+											{{shipment.trailerPlate}}
+
+										{% else %}
+											{{shipment.trailerPlate}}/{{shipment.tract1}}</p>
+									{% endif %}
+
+
+								</div>
+								<div>
+									<p class="text-xs-custom">7-Nombre de colis</p>
+									<p class="text-xs-custom">Number of packages</p>
+									<p class="texte-xs fontbold   texte-center">
+										{% if shipment.TypeLoading.id == 1 %}
+											{% if shipment.quantite2 == 0 %}
+												{{shipment.quantity}}</p>
+										{% else %}
+											{{shipment.quantity}}/{{shipment.quantite2}}</p>
+									{% endif %}
+
+								{% else %}
+									{{shipment.nombrePalette}}</p>
+							{% endif %}
+
+						</div>
+						<div>
+							<p class="text-xs-custom">8-Mode d'emballage</p>
+							<p class="text-xs-custom">Method of packing</p>
+							{% if shipment.TypeLoading.id == 1 %}
+								<p class="text-xs font-bold pt-2">Collis/Parcel</p>
+							{% else %}
+								<p class="text-xs font-bold pt-2">Palettes/Items</p>
+							{% endif %}
+
+
+						</div>
+						<div class="">
+							<p class="text-xs-custom">9-Nature de la Marchandise</p>
+							<p class="text-xs-custom">Nature of the goods</p>
+
+							<p class="texte-xs fontbold">
+								Mixed
+								<br>(Shoes/Textile)
+							</p>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-3 wu-ful hfinal10 ">
+						<div class="border-ri border-black  ">
+							<p class="text-xs-custom ">10-No Statistique</p>
+							<p class="text-xs-custom pl-1">Statiscal number</p>
+						</div>
+						<div class="border-ri ">
+							<p class="text-xs-custom">11-Poids brut kg</p>
+							<p class="text-xs-custom">
+								Gross weight in kg</p>
+						</div>
+						<div>
+							<p class="text-xs-custom">Cubage m^3</p>
+							<p class="text-xs-custom">Volume in m^3</p>
+						</div>
+					</div>
+
+				</div>
+				<div class="template-grid60 ">
+					<div class="col-grid-4 border-ri borde-top ">
+						<div class="">
+							<p class="text-xs-custom">Classe</p>
+							<p class="text-xs-custom">Class</p>
+						</div>
+						<div class="">
+							<p class="text-xs-custom">chiffre</p>
+							<p class="text-xs-custom">Number</p>
+						</div>
+						<div class="">
+							<p class="text-xs-custom">Lettre</p>
+							<p class="text-xs-custom">Letter</p>
+						</div>
+						<div class="">
+							<p class="text-xs-custom">(ADR*)</p>
+						</div>
+					</div>
+					<div class="borde-black col-grid-3 w-full ">
+						<div class="border-ri  hfinal  ">
+							<p class="text-xs-custom"></p>
+						</div>
+						<div class="border-ri ">
+							<p class="text-xs-custom"></p>
+						</div>
+						<div>
+							<p class="text-xs-custom"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="cols-grid-2">
+				<div class="soudiv1">
+					<div class="soudiv2">
+						<p class="text-xs-custom">13-Instructions de l'expediteur</p>
+						<p class="text-xs-custom">
+							Sender's Instructions</p>
+						<p class="texte-xs fontbold texte-center">Reference:{{shipment.numberReference}}
+						</p>
+
+						{% if shipment.plomb1 == 0 and shipment.tract1 == 0 %}
+							<p class="texte-xs fontbold texte-center ">Plomb:{{shipment.sealNumber}}
+							</p>
+						{% else %}
+							<p class="texte-xs fontbold texte-center ">Plomb N°1:
+							{{shipment.sealNumber}}==>{{shipment.trailerPlate}}==>{{shipment.quantity}}
+						</p>
+						<p class="texte-xs fontbold texte-center ">Plomb N°2:{{shipment.plomb1}}==>{{shipment.tract1}}==>
+							{{shipment.quantite2}}
+						</p>
+						{% endif %}
