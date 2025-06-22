@@ -59,7 +59,7 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
             $sendMailServices->send(
-                'no-reply@cmrt.com',
+                'nabytoure-admin@nabytoure.com',
                 $user->getEmail(),
                 'Activation de votre compte sur le site nabytoure.com(CmrT)',
                 'register',
@@ -143,7 +143,7 @@ class RegistrationController extends AbstractController
 
         // do anything else you need here, like send an email
         $mail->send(
-            'no-reply@cmrt.com',
+            'nabytoure-admin@nabytoure.com',
             $user->getEmail(),
             'Activation de votre compte sur le site nabytoure.com(CmrT)',
             'register',
@@ -184,7 +184,7 @@ class RegistrationController extends AbstractController
                 //on envoi  mail 
 
                 $mail->send(
-                    'no-replay@cmrt.com',
+                    'nabytoure-admin@nabytoure.com',
 
                     $user->getEmail(),
                     'Réinitialisation de mot de pass',
@@ -206,7 +206,7 @@ class RegistrationController extends AbstractController
 
 
 
-        return $this->render('Security/reset-password.html.twig', ['form' => $form->createView()]);
+        return $this->render('security/reset-password.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/oubli-pass/{token}', name: 'reset_pass')]
