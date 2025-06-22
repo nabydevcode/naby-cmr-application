@@ -151,19 +151,19 @@ class MainController extends AbstractController
             $url = $this->generateUrl('shipment_print_pdf', ['id' => $shipment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $filePath = $this->getParameter('kernel.project_dir') . '/public/shipment_' . $shipment->getId() . '.pdf';
-            Browsershot::url($url)
+            /* Browsershot::url($url)
                 ->setNodeBinary('/opt/homebrew/bin/node')
                 ->setNpmBinary('/opt/homebrew/bin/npm')
                 ->waitUntilNetworkIdle()
                 ->format('A4')
+                ->save($filePath); */
+            Browsershot::url($url)
+                ->setNodeBinary('/usr/bin/node')
+                ->setNpmBinary('/usr/bin/npm')
+                ->setChromePath('/usr/bin/google-chrome')
+                ->waitUntilNetworkIdle()
+                ->format('A4')
                 ->save($filePath);
-            /*  Browsershot::url($url)
-                 ->setNodeBinary('/usr/bin/node')
-                 ->setNpmBinary('/usr/bin/npm')
-                 ->setChromePath('/usr/bin/google-chrome')
-                 ->waitUntilNetworkIdle()
-                 ->format('A4')
-                 ->save($filePath); */
 
             $this->addFlash('success', "votre CMR a ete creer avec success ");
             return $this->file($filePath, 'shipment_' . $shipment->getId() . '.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
