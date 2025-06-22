@@ -14,7 +14,6 @@
 						{{ error.messageKey|trans(error.messageData, 'security') }}
 						<p>
 							Votre identifiant ne sont pas correctes</p>
-
 					</div>
 				{% endif %}
 
@@ -63,20 +62,26 @@
 	</div>
 {% endblock %}
 {% block javascripts %}
+	{{ parent() }}
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
+		function initPasswordToggle() {
 const toggleBtn = document.getElementById("togglePassword");
 const passwordField = document.getElementById("inputPassword");
 
+if (toggleBtn && passwordField) { // Pour éviter d'attacher deux fois l'événement
+if (! toggleBtn.dataset.listenerAttached) {
 toggleBtn.addEventListener("click", function () {
-if (passwordField.type === "password") {
-passwordField.type = "text";
-toggleBtn.textContent = "Masquer";
-} else {
-passwordField.type = "password";
-toggleBtn.textContent = "Afficher";
+const isHidden = passwordField.type === "password";
+passwordField.type = isHidden ? "text" : "password";
+toggleBtn.textContent = isHidden ? "Masquer" : "Afficher";
+});
+toggleBtn.dataset.listenerAttached = "true";
 }
-});
-});
+}
+}
+
+// Exécuter le script à chaque chargement de page complet ou Turbo Drive
+document.addEventListener("DOMContentLoaded", initPasswordToggle);
+document.addEventListener("turbo:load", initPasswordToggle);
 	</script>
 {% endblock %}

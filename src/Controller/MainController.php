@@ -116,17 +116,24 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $this->denyAccessUnlessGranted('ROLE_USER');
-        $form = $this->createForm(ShipmentType::class, $shipment);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-            $this->addFlash('success', "votre CMR  a ete modifier avec success");
-            return $this->redirectToRoute('shipment_show', ['id' => $shipment->getId()]);
+
+        if ($user === $shipment->getCreator() || in_array('ROLE_ADMIN', $user->getRoles())) {
+            $form = $this->createForm(ShipmentType::class, $shipment);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->flush();
+                $this->addFlash('success', "votre CMR  a ete modifier avec success");
+                return $this->redirectToRoute('shipment_show', ['id' => $shipment->getId()]);
+            }
+            return $this->render('main/update.html.twig', [
+                'form' => $form->createView(),
+                'shipment' => $shipment
+            ]);
         }
-        return $this->render('main/update.html.twig', [
-            'form' => $form->createView(),
-            'shipment' => $shipment
-        ]);
+        $this->addFlash('warning', "vous n'êtes pas l'auteur de cette CMR ");
+        return $this->redirectToRoute('app_main');
+
+
 
     }
     #[Route('/shipment/print/cmr/{id}', name: 'shipment_pdf')]
@@ -137,26 +144,33 @@ class MainController extends AbstractController
             $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
             return $this->redirectToRoute('app_login');
         }
+
         $this->denyAccessUnlessGranted('ROLE_USER');
-        $url = $this->generateUrl('shipment_print_pdf', ['id' => $shipment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/shipment_' . $shipment->getId() . '.pdf';
-        /*  Browsershot::url($url)
-             ->setNodeBinary('/opt/homebrew/bin/node')
-             ->setNpmBinary('/opt/homebrew/bin/npm')
-             ->waitUntilNetworkIdle()
-             ->format('A4')
-             ->save($filePath); */
-        Browsershot::url($url)
-            ->setNodeBinary('/usr/bin/node')
-            ->setNpmBinary('/usr/bin/npm')
-            ->setChromePath('/usr/bin/google-chrome')
-            ->waitUntilNetworkIdle()
-            ->format('A4')
-            ->save($filePath);
+        if ($user === $shipment->getCreator() || in_array('ROLE_ADMIN', $user->getRoles())) {
+            $url = $this->generateUrl('shipment_print_pdf', ['id' => $shipment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $this->addFlash('success', "votre CMR a ete creer avec success ");
-        return $this->file($filePath, 'shipment_' . $shipment->getId() . '.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+            $filePath = $this->getParameter('kernel.project_dir') . '/public/shipment_' . $shipment->getId() . '.pdf';
+            Browsershot::url($url)
+                ->setNodeBinary('/opt/homebrew/bin/node')
+                ->setNpmBinary('/opt/homebrew/bin/npm')
+                ->waitUntilNetworkIdle()
+                ->format('A4')
+                ->save($filePath);
+            /*  Browsershot::url($url)
+                 ->setNodeBinary('/usr/bin/node')
+                 ->setNpmBinary('/usr/bin/npm')
+                 ->setChromePath('/usr/bin/google-chrome')
+                 ->waitUntilNetworkIdle()
+                 ->format('A4')
+                 ->save($filePath); */
+
+            $this->addFlash('success', "votre CMR a ete creer avec success ");
+            return $this->file($filePath, 'shipment_' . $shipment->getId() . '.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
+        }
+        $this->addFlash('warning', "vous n'êtes pas l'auteur ");
+        return $this->redirectToRoute('app_main');
+
     }
 
 
