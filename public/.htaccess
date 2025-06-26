@@ -1,0 +1,5 @@
+# Bloquer les accès aux fichiers sensibles
+<FilesMatch "\.(env|git|htaccess|htpasswd|ini|phar|lock|pem|log)$">
+    Require all denied
+</FilesMatch>
+

@@ -15,24 +15,24 @@ class ConsigneType extends AbstractType
         $baseInputClass = 'form-input block w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600';
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom  destinateur ',
+                'label' => 'Nom  destinataire ',
                 'attr' => [
                     'class' => $baseInputClass,
-                    'placeholder' => 'Entre le nom destinateur'
+                    'placeholder' => 'Entre le nom destinataire'
                 ]
             ])
             ->add('address', TextType::class, [
-                'label' => 'Adress du destinateur',
+                'label' => 'Adress du destinataire',
                 'attr' => [
                     'class' => $baseInputClass,
-                    'placeholder' => 'Entre Adress destinateur'
+                    'placeholder' => 'Entre Adress destinataire'
                 ]
             ])
             ->add('country', TextType::class, [
-                'label' => 'Pays du destinateur',
+                'label' => 'Pays du destinataire',
                 'attr' => [
                     'class' => $baseInputClass,
-                    'placeholder' => 'Entre Pays destinateur'
+                    'placeholder' => 'Entre Pays destinataire'
                 ]
             ])
         ;
