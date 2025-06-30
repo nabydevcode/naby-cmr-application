@@ -9,7 +9,9 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Entity\Users;
 use App\Form\RechercheType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use App\Form\ShipmentType;
@@ -63,31 +65,47 @@ class MainController extends AbstractController
     /*  formulaire pour creer le cmr  */
 
     #[Route('/main/formulaire', name: 'app_main_formulaire', methods: ['GET', 'POST'])]
-
     public function formulaire(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         $user = $security->getUser();
 
         if (!$user || !$user->isVerify()) {
-            $this->addFlash('error', 'Vous devez vérifier  votre email  ou vous connecter pour accéder à cette page .');
+            $this->addFlash('error', 'Vous devez vérifier votre email ou vous connecter pour accéder à cette page.');
             return $this->redirectToRoute('app_login');
         }
-        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $shipment = new Shipment();
 
         $form = $this->createForm(ShipmentType::class, $shipment);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            // 🔍 Vérification du doublon manuelle
             $shipment->setCreator($user);
+            $existing = $em->getRepository(Shipment::class)->findOneBy([
+                'numberReference' => $shipment->getNumberReference(),
+            ]);
+
+
+            if ($existing) {
+                $this->addFlash('info', "Ce numéro de référence est déjà utilisé.");
+                return $this->redirectToRoute('app_main_formulaire');
+            }
+
+
+
             $em->persist($shipment);
             $em->flush();
 
-            $this->addFlash('success', "CMR creer avec succes ");
+            $this->addFlash('success', "CMR créé avec succès.");
             return $this->redirectToRoute('shipment_show', ['id' => $shipment->getId()]);
         }
-        return $this->render('main/formulaire.html.twig', ['form' => $form->createView()]);
+
+        return $this->render('main/formulaire.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /*  pour afficher le cmr creer  en fonction de L'ID donner   */
@@ -132,9 +150,6 @@ class MainController extends AbstractController
         }
         $this->addFlash('warning', "vous n'êtes pas l'auteur de cette CMR ");
         return $this->redirectToRoute('app_main');
-
-
-
     }
     #[Route('/shipment/print/cmr/{id}', name: 'shipment_pdf')]
     public function generatePdf(Shipment $shipment, Security $security): Response
@@ -151,20 +166,19 @@ class MainController extends AbstractController
             $url = $this->generateUrl('shipment_print_pdf', ['id' => $shipment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $filePath = $this->getParameter('kernel.project_dir') . '/public/shipment_' . $shipment->getId() . '.pdf';
-            /* Browsershot::url($url)
+            Browsershot::url($url)
                 ->setNodeBinary('/opt/homebrew/bin/node')
                 ->setNpmBinary('/opt/homebrew/bin/npm')
                 ->waitUntilNetworkIdle()
                 ->format('A4')
-                ->save($filePath); */
-            Browsershot::url($url)
-                ->setNodeBinary('/usr/bin/node')
-                ->setNpmBinary('/usr/bin/npm')
-                ->setChromePath('/usr/bin/google-chrome')
-                ->waitUntilNetworkIdle()
-                ->format('A4')
                 ->save($filePath);
-
+            /* Browsershot::url($url)
+              ->setNodeBinary('/usr/bin/node')
+              ->setNpmBinary('/usr/bin/npm')
+              ->setChromePath('/usr/bin/google-chrome')
+              ->waitUntilNetworkIdle()
+              ->format('A4')
+              ->save($filePath);*/
             $this->addFlash('success', "votre CMR a ete creer avec success ");
             return $this->file($filePath, 'shipment_' . $shipment->getId() . '.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
         }
@@ -172,9 +186,6 @@ class MainController extends AbstractController
         return $this->redirectToRoute('app_main');
 
     }
-
-
-
     /* le pdf prete a imprimer   */
     #[Route('/shipment/pdf/{id}', name: 'shipment_print_pdf', methods: ['GET', 'POST'])]
 
@@ -189,10 +200,8 @@ class MainController extends AbstractController
         return $this->render('main/cmr.html.twig', ['shipment' => $shipment]);
     }
 
-
-
     #[Route('/main/plomb', name: 'main_plomb', methods: ['GET'])]
-    public function listShipment(Security $security, EntityManagerInterface $entityManagerInterface): Response
+    public function listShipment(Security $security, EntityManagerInterface $entityManagerInterface, PaginatorInterface $paginator, Request $request): Response
     {
         $user = $security->getUser();
         if (!$user || !$user->isVerify()) {
@@ -200,14 +209,21 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $this->denyAccessUnlessGranted('ROLE_USER');
-        $shipment = $entityManagerInterface->getRepository(Shipment::class)->findBy(['creator' => $user]);
+        /*         $shipment = $entityManagerInterface->getRepository(Shipment::class)->findBy(['creator' => $user]); */
+        $qb = $entityManagerInterface->getRepository(Shipment::class)
+            ->createQueryBuilder('s')
+            ->where('s.creator= :user')
+            ->setParameter('user', $user)
+            ->orderBy('s.createdAt', 'ASC');
+
+        $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 2);
 
 
-        return $this->render('main/list.html.twig', ['shipments' => $shipment]);
+        return $this->render('main/list.html.twig', ['pagination' => $pagination]);
     }
 
     #[Route('/plomb', name: 'general_plomb', methods: ['GET'])]
-    public function plomb(Security $security, ShipmentRepository $shipmentRepository): Response
+    public function plomb(Security $security, ShipmentRepository $shipmentRepository, PaginatorInterface $paginator, Request $request): Response
     {
 
         $user = $security->getUser();
@@ -221,11 +237,15 @@ class MainController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         // Récupère tous les Shipments
-        $plomb = $shipmentRepository->findAll();
+        /*      $plomb = $shipmentRepository->findAll(); */
+        $qb = $shipmentRepository->createQueryBuilder('s')
+            ->orderBy('s.id', 'ASC');
+        $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 2);
+
 
         // Correction du rendu du template
         return $this->render('main/plomb.html.twig', [
-            'plombs' => $plomb // Correction de la clé du tableau
+            'plombs' => $pagination, // Correction de la clé du tableau
         ]);
     }
 

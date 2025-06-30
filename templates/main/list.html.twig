@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Hello TransporteurController!
+{% block title %}Plomb
 {% endblock %}
 
 {% block body %}
@@ -31,25 +31,28 @@
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-300">
-					{% for shipment in shipments %}
+					{% for plomb in pagination %}
 						<tr class="hover:bg-gray-100 transition duration-300">
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.id }}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.numberReference}}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.consigne.name }}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.sealNumber }}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.plomb1 }}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.createdAt|date('d/m/Y') }}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.arrivalTime|date('H:i') }}</td>
-							<td class="border border-gray-300 p-4 text-center">{{ shipment.departureTime|date('H:i')}}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.id }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.numberReference}}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.consigne.name }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.sealNumber }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.plomb1 }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.createdAt|date('d/m/Y') }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.arrivalTime|date('H:i') }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ plomb.departureTime|date('H:i')}}</td>
 						</tr>
 
 					{% endfor %}
+
+
 				</tbody>
 			</table>
 
 		</div>
 
+		{% include 'components/pagination.html.twig' with { pagination: pagination } %}
+
+
 	</div>
-
-
 {% endblock %}

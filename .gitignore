@@ -1,26 +1,35 @@
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
+### Symfony ###
+.env
+.env.local
+.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+/config/secrets/*/private.pem
 /var/
 /vendor/
-###< symfony/framework-bundle ###
 
-###> phpunit/phpunit ###
+### PHPUnit ###
 /phpunit.xml
 .phpunit.result.cache
-###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
-###> symfony/webpack-encore-bundle ###
+### Webpack Encore ###
 /node_modules/
 /public/build/
 npm-debug.log
 yarn-error.log
-###< symfony/webpack-encore-bundle ###
+
+### 📂 Fichiers générés ou volumineux ###
+/public/*.pdf
+/public/uploads/
+
+### 🔒 Clés sensibles ###
+/config/secrets/**/*.private.php
+/config/secrets/**/*.pem
+
+### 👨‍💻 Fichiers spécifiques à l'environnement de dev ###
+/.idea/
+/.vscode/
+.DS_Store
+*.log
+
+### 🚫 Fichiers du serveur Apache ou web ###
+/public/.htaccess

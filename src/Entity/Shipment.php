@@ -6,7 +6,12 @@ use App\Repository\ShipmentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: ShipmentRepository::class)]
+
+
+
 class Shipment
 {
     #[ORM\Id]
@@ -31,9 +36,6 @@ class Shipment
 
     #[ORM\Column]
     private ?int $quantity = null;
-
-
-
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeImmutable $arrivalTime = null;
 
@@ -52,8 +54,9 @@ class Shipment
     #[ORM\ManyToOne(inversedBy: 'shipments')]
     private ?TypeLoading $typeLoading = null;
 
-    #[ORM\Column]
-    private ?int $numberReference = null;
+    #[ORM\Column(unique: true, length: 255)]
+    #[Assert\NotBlank]
+    private ?string $numberReference = null;
 
     #[ORM\Column]
     private ?int $nombrePalette = null;
@@ -155,14 +158,10 @@ class Shipment
 
         return $this;
     }
-
-
-
     public function getArrivalTime(): ?\DateTimeImmutable
     {
         return $this->arrivalTime;
     }
-
     public function setArrivalTime(\DateTimeImmutable $arrivalTime): static
     {
         $this->arrivalTime = $arrivalTime;
@@ -222,20 +221,18 @@ class Shipment
     {
         return $this->typeLoading;
     }
-
     public function setTypeLoading(?TypeLoading $typeLoading): static
     {
         $this->typeLoading = $typeLoading;
 
         return $this;
     }
-
-    public function getNumberReference(): ?int
+    public function getNumberReference(): ?string
     {
         return $this->numberReference;
     }
 
-    public function setNumberReference(int $numberReference): static
+    public function setNumberReference(string $numberReference): static
     {
         $this->numberReference = $numberReference;
 
