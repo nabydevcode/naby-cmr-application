@@ -1,5 +1,6 @@
-# Bloquer les accès aux fichiers sensibles
-<FilesMatch "\.(env|git|htaccess|htpasswd|ini|phar|lock|pem|log)$">
-    Require all denied
-</FilesMatch>
-
+<Directory /var/www/naby-cmr-application/public>
+    # Bloque l'accès aux fichiers .env, .git, etc.
+    <FilesMatch "^(\.env|\.git|\.htaccess|composer\.json|composer\.lock|package\.json|package-lock\.json|yarn\.lock)$">
+        Require all denied
+    </FilesMatch>
+</Directory>
