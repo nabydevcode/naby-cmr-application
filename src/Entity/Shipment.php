@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ShipmentRepository::class)]
 
@@ -14,14 +15,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Shipment
 {
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'shipments')]
     private ?Company $company = null;
 
+    #[Groups(['shipment:read'])]
     #[ORM\ManyToOne(inversedBy: 'shipments')]
     private ?Consigne $consigne = null;
 
@@ -31,14 +36,18 @@ class Shipment
     #[ORM\ManyToOne(inversedBy: 'shipments')]
     private ?LoadingLocations $loadingLocation = null;
 
+    #[Groups(['shipment:read'])]
     #[ORM\Column(length: 255)]
     private ?string $sealNumber = null;
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    #[Groups(['shipment:read'])]
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeImmutable $arrivalTime = null;
 
+    #[Groups(['shipment:read'])]
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeImmutable $departureTime = null;
 
@@ -54,6 +63,7 @@ class Shipment
     #[ORM\ManyToOne(inversedBy: 'shipments')]
     private ?TypeLoading $typeLoading = null;
 
+    #[Groups(['shipment:read'])]
     #[ORM\Column(unique: true, length: 255)]
     #[Assert\NotBlank]
     private ?string $numberReference = null;
@@ -61,6 +71,7 @@ class Shipment
     #[ORM\Column]
     private ?int $nombrePalette = null;
 
+    #[Groups(['shipment:read'])]
     #[ORM\Column(length: 255)]
     private ?string $plomb1 = null;
 

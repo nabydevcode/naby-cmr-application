@@ -16,6 +16,26 @@ class ShipmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Shipment::class);
     }
 
+    public function searchByDateInterval(?\DateTimeInterface $start, ?\DateTimeInterface $end): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($start) {
+            $qb->andWhere('p.createdAt >= :start')
+                ->setParameter('start', $start);
+        }
+
+        if ($end) {
+            $qb->andWhere('p.createdAt <= :end')
+                ->setParameter('end', $end);
+        }
+
+        return $qb->orderBy('p.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return Shipment[] Returns an array of Shipment objects
     //     */
@@ -40,4 +60,5 @@ class ShipmentRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
 }
