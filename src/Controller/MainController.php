@@ -175,19 +175,19 @@ class MainController extends AbstractController
             $url = $this->generateUrl('shipment_print_pdf', ['id' => $shipment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $filePath = $this->getParameter('kernel.project_dir') . '/public/shipment_' . $shipment->getId() . '.pdf';
-            Browsershot::url($url)
+          /*  Browsershot::url($url)
                 ->setNodeBinary('/opt/homebrew/bin/node')
                 ->setNpmBinary('/opt/homebrew/bin/npm')
                 ->waitUntilNetworkIdle()
                 ->format('A4')
-                ->save($filePath);
-            /* Browsershot::url($url)
+                ->save($filePath);*/
+            Browsershot::url($url)
               ->setNodeBinary('/usr/bin/node')
               ->setNpmBinary('/usr/bin/npm')
               ->setChromePath('/usr/bin/google-chrome')
               ->waitUntilNetworkIdle()
               ->format('A4')
-              ->save($filePath);*/
+              ->save($filePath);
             $this->addFlash('success', "votre CMR a ete creer avec success ");
             return $this->file($filePath, 'shipment_' . $shipment->getId() . '.pdf', ResponseHeaderBag::DISPOSITION_INLINE);
         }
@@ -225,7 +225,9 @@ class MainController extends AbstractController
             ->setParameter('user', $user)
             ->orderBy('s.createdAt', 'ASC');
 
-        $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 2);
+        $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 10);
+
+
         return $this->render('main/list.html.twig', ['pagination' => $pagination]);
     }
 
@@ -252,6 +254,11 @@ class MainController extends AbstractController
 
         $start = $search['start'] ?? null;
         $end = $search['end'] ?? null;
+        // Récupère tous les Shipments
+        /*      $plomb = $shipmentRepository->findAll(); */
+        $qb = $shipmentRepository->createQueryBuilder('s')
+            ->orderBy('s.id', 'ASC');
+        $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 10);
 
 
         $pagination = $shipmentRepository->searchByDateInterval($start, $end);
