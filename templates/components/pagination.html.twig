@@ -1,5 +1,5 @@
 {% if pagination.pageCount > 1 %}
-<<<<<<< HEAD
+
 	<nav class="w-full overflow-x-auto mt-6" aria-label="Pagination">
 		<ul class="flex flex-row flex-nowrap items-center justify-center gap-2 px-2 text-sm whitespace-nowrap">
 
@@ -31,43 +31,6 @@
 					</a>
 				</li>
 			{% endif %}
-=======
-  <nav class="w-full overflow-x-auto mt-6" aria-label="Pagination">
-    <ul class="flex flex-row flex-nowrap items-center justify-center gap-2 px-2 text-sm whitespace-nowrap">
 
-      {% if pagination.currentPageNumber > 1 %}
-        <li>
-          <a href="?page={{ pagination.currentPageNumber - 1 }}"
-             class="px-3 py-1 border rounded text-gray-600 hover:bg-gray-100 whitespace-nowrap">
-            ← Précédent
-          </a>
-        </li>
-      {% endif %}
-
-      {% for page in 1..pagination.pageCount %}
-        <li>
-          <a href="?page={{ page }}"
-             class="px-3 py-1 border rounded
-                    {% if page == pagination.currentPageNumber %}
-                      bg-blue-600 text-white border-blue-600 shadow
-                    {% else %}
-                      text-gray-700 border-gray-300 hover:bg-gray-100
-                    {% endif %}">
-            {{ page }}
-          </a>
-        </li>
-      {% endfor %}
-
-      {% if pagination.currentPageNumber < pagination.pageCount %}
-        <li>
-          <a href="?page={{ pagination.currentPageNumber + 1 }}"
-             class="px-3 py-1 border rounded text-gray-600 hover:bg-gray-100 whitespace-nowrap">
-            Suivant →
-          </a>
-        </li>
-      {% endif %}
->>>>>>> a55ab32 (Sauvegarde temporaire avant pull)
-
-    </ul>
   </nav>
 {% endif %}

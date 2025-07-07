@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Shipment;
@@ -228,6 +227,10 @@ class MainController extends AbstractController
         $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 10);
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2c9ed49 (Modifs côté VPS avant synchronisation)
         return $this->render('main/list.html.twig', ['pagination' => $pagination]);
     }
 
@@ -252,7 +255,7 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         $search = $form->getData();
 
-        $start = $search['start'] ?? null;
+         $start = $search['start'] ?? null;
         $end = $search['end'] ?? null;
         // Récupère tous les Shipments
         /*      $plomb = $shipmentRepository->findAll(); */
@@ -290,7 +293,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/plomb/json', name: 'plombs_json', methods: ['GET'])]
+#[Route('/plomb/json', name: 'plombs_json', methods: ['GET'])]
     public function plombjson(Request $request, ShipmentRepository $repo, SerializerInterface $serializer, Security $security): Response
     {
 
@@ -325,7 +328,7 @@ class MainController extends AbstractController
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $formData = $request->query->all('form');
-        try {
+try {
             $start = isset($formData['start']) ? new \DateTimeImmutable($formData['start']) : null;
             $end = isset($formData['end']) ? new \DateTimeImmutable($formData['end']) : null;
         } catch (\Exception $e) {
@@ -365,6 +368,7 @@ class MainController extends AbstractController
         $response->headers->set('Content-Disposition', "attachment; filename=\"$filename\"");
         return $response;
     }
+
 
 
 }
