@@ -250,8 +250,8 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         $search = $form->getData();
 
-        $start = $search['start'] ?? (new \DateTimeImmutable('yesterday'));
-        $end = $search['end'] ?? (new \DateTimeImmutable('now'));
+        $start = $search['start'] ?? null;
+        $end = $search['end'] ?? null;
 
 
         $pagination = $shipmentRepository->searchByDateInterval($start, $end);
@@ -294,8 +294,13 @@ class MainController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $formData = $request->query->all('form');
 
-        $start = isset($formData['start']) ? new \DateTimeImmutable($formData['start']) : null;
-        $end = isset($formData['end']) ? new \DateTimeImmutable($formData['end']) : null;
+        try {
+            $start = isset($formData['start']) ? new \DateTimeImmutable($formData['start']) : null;
+            $end = isset($formData['end']) ? new \DateTimeImmutable($formData['end']) : null;
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Format de date invalide'], 400);
+        }
+
         $shipments = $repo->searchByDateInterval($start, $end);
 
         // Serilisation sécurisse avec les groupes
@@ -312,9 +317,14 @@ class MainController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $search = $request->query->all('form');
-        $start = isset($search['start']) ? new \DateTimeImmutable($search['start']) : null;
-        $end = isset($search['end']) ? new \DateTimeImmutable($search['end']) : null;
+        $formData = $request->query->all('form');
+        try {
+            $start = isset($formData['start']) ? new \DateTimeImmutable($formData['start']) : null;
+            $end = isset($formData['end']) ? new \DateTimeImmutable($formData['end']) : null;
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Format de date invalide'], 400);
+        }
+
 
         $shipments = $repo->searchByDateInterval($start, $end);
 

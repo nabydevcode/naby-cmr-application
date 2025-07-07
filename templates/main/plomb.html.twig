@@ -91,7 +91,7 @@
 				<tbody class="divide-y divide-gray-300">
 					{% for plomb in plombs %}
 						<tr class="hover:bg-gray-100 transition duration-300">
-							<td class="border border-gray-300 p-4 text-center">{{ plomb.id }}</td>
+							<td class="border border-gray-300 p-4 text-center">{{ loop.index }}</td>
 							<td class="border border-gray-300 p-4 text-center">{{ plomb.numberReference}}</td>
 							<td class="border border-gray-300 p-4 text-center">{{ plomb.consigne.name }}</td>
 							<td class="border border-gray-300 p-4 text-center">{{ plomb.sealNumber }}</td>
