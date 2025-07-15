@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié
+{% endblock %}
+{% block body %}
+
+<div class="container flex justify-center items-center px-4 py-8">
+    <table class="border-collapse border border-gray-400 mx-auto max-w-screen-lg shadow-lg rounded-lg overflow-hidden">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="border border-gray-300 p-4 text-center">ID</th>
+                <th class="border border-gray-300 p-4 text-center">Name</th>
+                <th class="border border-gray-300 p-4 text-center">Email</th>
+                <th class="border border-gray-300 p-4 text-center">Roles</th>
+                <th class="border border-gray-300 p-4 text-center">Action</th>
+            </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-300">
+            {% for user in users %}
+            <tr class="hover:bg-gray-100 transition duration-300">
+                <td class="border border-gray-300 p-4 text-center">{{ loop.index }}</td>
+                <td class="border border-gray-300 p-4 text-center">{{ user.username }}</td>
+                <td class="border border-gray-300 p-4 text-center">{{ user.email }}</td>
+                <td class="border border-gray-300 p-4 text-center">{{ user.roles|join(', ') }}</td>
+                <td class="border border-gray-300 p-4 text-center">
+                    <a href="{{ path('user_roles_edit', { id: user.id }) }}"
+                        class="text-indigo-600 hover:underline">Update-Roles</a> |
+                    <a href="#" class="text-red-600 hover:underline">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+
+{% endblock %}
