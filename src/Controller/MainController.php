@@ -227,10 +227,7 @@ class MainController extends AbstractController
         $pagination = $paginator->paginate($qb, $request->query->getInt('page', 1), 10);
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 2c9ed49 (Modifs côté VPS avant synchronisation)
         return $this->render('main/list.html.twig', ['pagination' => $pagination]);
     }
 

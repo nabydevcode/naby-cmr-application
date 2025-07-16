@@ -33,8 +33,7 @@
 				<tbody class="divide-y divide-gray-300">
 					{% for plomb in pagination %}
 						<tr class="hover:bg-gray-100 transition duration-300">
-							<td class="border border-gray-300 p-4 text-center">{{ plomb.numberReference }}</td>
-<td class="border border-gray-300 p-4 text-center">
+                                                        <td class="border border-gray-300 p-4 text-center">
 								{{ (pagination.currentPageNumber - 1) * pagination.itemNumberPerPage + loop.index }}
 							</td>
 							<td class="border border-gray-300 p-4 text-center">{{ plomb.numberReference}}</td>

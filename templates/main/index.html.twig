@@ -44,12 +44,12 @@
 						Tous les Plomb
 					</a>
 				{% endif %}
-				{% if  is_granted('ROLE_ADMIN') %}
-
+			
+                                 {% if  is_granted('ROLE_ADMIN') %}                                
 					<a href="{{path('app_dasabord')}}" class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-6 rounded-lg text-center transition">
 						Dashboard
 					</a>
-				{% endif %}
+				 {% endif %} 
 
 			</div>
 		</div>
