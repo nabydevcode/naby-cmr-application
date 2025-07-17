@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription {% endblock %}
+{% block title %}Inscription
+{% endblock %}
 
 {% block body %}
 	<div class="min-h-screen flex items-center justify-center bg-gray-100">
@@ -41,7 +42,7 @@
 					{{ form_widget(registrationForm.plainPassword, {
                         'attr': {'class': 'w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500', 'id': 'password'}
                     }) }}
-				
+
 
 					<button type="button" id="togglePassword" class="absolute inset-y-0 right-0 px-3 py-2 text-sm text-gray-600 hover:text-blue-600 focus:outline-none">
 						Afficher
@@ -59,7 +60,7 @@
 				{{ form_errors(registrationForm.agreeTerms) }}
 			</div>
 
-
+			{{ form_row(registrationForm.captcha, {'attr': {'hidden': true}}) }}
 			<!-- Submit Button -->
 			<button type="submit" class="w-full bg-gray-900 hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
 				S'inscrire
@@ -72,26 +73,41 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script>
-		document.addEventListener("turbo:load", function () {
-initPasswordToggle();
-});
 
-function initPasswordToggle() {
+	<script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}"></script>
+
+	<script>
+		function initPasswordToggle() {
 const toggleBtn = document.getElementById("togglePassword");
 const passwordField = document.getElementById("{{ registrationForm.plainPassword.vars.id }}");
 
-
 if (toggleBtn && passwordField) {
+if (! toggleBtn.dataset.listenerAttached) {
 toggleBtn.addEventListener("click", function () {
 const isHidden = passwordField.type === "password";
 passwordField.type = isHidden ? "text" : "password";
 toggleBtn.textContent = isHidden ? "Masquer" : "Afficher";
 });
+toggleBtn.dataset.listenerAttached = "true";
 }
 }
+}
+
+function executeRecaptcha() {
+grecaptcha.ready(function () {
+grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'register'}).then(function (token) {
+const captchaField = document.querySelector('[name="registration_form[captcha]"]');
+if (captchaField) {
+captchaField.value = token;
+}
+});
+});
+}
+
+// Exécuter les fonctions au bon moment (Turbo ou normal)
+document.addEventListener("DOMContentLoaded", () => {
+initPasswordToggle();
+executeRecaptcha();
+});
 	</script>
 {% endblock %}
-
-
-

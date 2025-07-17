@@ -66,7 +66,8 @@ class RegistrationForm extends AbstractType
             ])
             ->add('captcha', Recaptcha3Type::class, [
                 'constraints' => new Recaptcha3(),
-                'action_name' => 'app_login',
+                'action_name' => 'register',
+                'mapped' => false,
 
             ]);
     }
