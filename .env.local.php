@@ -10,6 +10,7 @@ return array (
   'MESSENGER_TRANSPORT_DSN' => 'doctrine://default?auto_setup=0',
   'MAILER_DSN'=>'smtp://nabytoure-admin@nabytoure.com:Maite1223%40@smtp.hostinger.com:465',
   'JWT_SECRET' => '0hLaLaTourenaby13207e!',
-  'RECAPTCHA3_KEY' => '6Lc1JIQrAAAAABlKvHLgXOuYQNQrB4htSCkiYtpc',
-  'RECAPTCHA3_SECRET' => '6Lc1JIQrAAAAADIJ2TjSpD3RBfXvp0fvpo90Txs6',
+  'GOOGLE_RECAPTCHA_SITE_KEY' => '6LdWx4crAAAAABIEjJrUQEAmqdVgon2CQXFPqS6O',
+  'GOOGLE_RECAPTCHA_SECRET' => '6LdWx4crAAAAADcBhM4LuoVCVG0lS8uvZDADQ9S8',
+  'GOOGLE_RECAPTCHA_SECRET_KEY' => '6LdWx4crAAAAADcBhM4LuoVCVG0lS8uvZDADQ9S8',
 );
