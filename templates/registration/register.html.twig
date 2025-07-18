@@ -74,40 +74,24 @@
 {% block javascripts %}
 	{{ parent() }}
 
-	<script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}"></script>
-
 	<script>
 		function initPasswordToggle() {
 const toggleBtn = document.getElementById("togglePassword");
 const passwordField = document.getElementById("{{ registrationForm.plainPassword.vars.id }}");
 
 if (toggleBtn && passwordField) {
-if (! toggleBtn.dataset.listenerAttached) {
 toggleBtn.addEventListener("click", function () {
 const isHidden = passwordField.type === "password";
 passwordField.type = isHidden ? "text" : "password";
 toggleBtn.textContent = isHidden ? "Masquer" : "Afficher";
 });
-toggleBtn.dataset.listenerAttached = "true";
-}
 }
 }
 
-function executeRecaptcha() {
-grecaptcha.ready(function () {
-grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'register'}).then(function (token) {
-const captchaField = document.querySelector('[name="registration_form[captcha]"]');
-if (captchaField) {
-captchaField.value = token;
-}
-});
-});
-}
 
-// Exécuter les fonctions au bon moment (Turbo ou normal)
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbo:load", function () {
 initPasswordToggle();
-executeRecaptcha();
+loadRecaptchaAndBindSubmission();
 });
 	</script>
 {% endblock %}

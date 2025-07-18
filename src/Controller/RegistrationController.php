@@ -34,38 +34,38 @@ class RegistrationController extends AbstractController
         $this->params = $params;
     }
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, SendMailServices $sendMailServices, JWTServices $jwt): Response
-    {
+
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        Security $security,
+        EntityManagerInterface $entityManager,
+        SendMailServices $sendMailServices,
+        JWTServices $jwt
+    ): Response {
         $user = new Users();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
 
+        // ✅ On vérifie d'abord que le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
+            // ✅ Récupération du token reCAPTCHA depuis le formulaire
 
-            // encode the plain password
+
+
+            // ✅ Création du compte utilisateur
+            $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            /* $user->setRoles(['ROLE_ADMIN', 'ROLE_USER']); */
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // on genere le JWT de l'utilisateur 
-            //on creer le header 
-            $header = [
-
-                'typ' => 'JWT',
-                'alg' => 'HS256'
-            ];
-            // ON creer le payload
-            $payload = [
-                'user_id' => $user->getId()
-            ];
-            // on genere le token
+            // ✅ Génération du token JWT
+            $header = ['typ' => 'JWT', 'alg' => 'HS256'];
+            $payload = ['user_id' => $user->getId()];
             $token = $jwt->generate($header, $payload, $this->getParameter('app.jwtsecret'));
 
-            // do anything else you need here, like send an email
+            // ✅ Envoi de l’email d’activation
             $sendMailServices->send(
                 'nabytoure-admin@nabytoure.com',
                 $user->getEmail(),
@@ -74,16 +74,16 @@ class RegistrationController extends AbstractController
                 compact('user', 'token')
             );
 
-            $this->addFlash('warning', " Veillez verifier votre email pour valider votre compte  ");
+            $this->addFlash('warning', "📬 Veuillez vérifier votre email pour valider votre compte.");
 
-
-
+            // ✅ Connexion immédiate
             return $security->login($user, AppUsersAuthenticator::class, 'main');
         }
 
+        // 👇 Rendu du formulaire avec la clé reCAPTCHA
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
-            'recaptcha_site_key' => $this->getParameter('karser_recaptcha3.site_key'),
+
         ]);
     }
 

@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.jwtsecret: '%env(JWT_SECRET)%'
-    site_key: '%env(RECAPTCHA3_KEY)%'
-    secret_key: '%env(RECAPTCHA3_SECRET)%'
+    
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
 
 services:
     App\Controller\ErrorController:
