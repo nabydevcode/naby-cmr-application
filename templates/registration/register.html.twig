@@ -59,6 +59,8 @@
 				</label>
 				{{ form_errors(registrationForm.agreeTerms) }}
 			</div>
+                        {{ form_row(registrationForm.captcha) }}
+
 
 			<!-- Submit Button -->
 			<button type="submit" class="w-full bg-gray-900 hover:bg-gray-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300">
@@ -71,26 +73,27 @@
 {% endblock %}
 
 {% block javascripts %}
-	{{ parent() }}
+    {{ parent() }}
 
-	<script>
-		function initPasswordToggle() {
-const toggleBtn = document.getElementById("togglePassword");
-const passwordField = document.getElementById("{{ registrationForm.plainPassword.vars.id }}");
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-if (toggleBtn && passwordField) {
-toggleBtn.addEventListener("click", function () {
-const isHidden = passwordField.type === "password";
-passwordField.type = isHidden ? "text" : "password";
-toggleBtn.textContent = isHidden ? "Masquer" : "Afficher";
-});
-}
-}
+    <script>
+        function initPasswordToggle() {
+            const toggleBtn = document.getElementById("togglePassword");
+            const passwordField = document.getElementById("{{ registrationForm.plainPassword.vars.id }}");
 
+            if (toggleBtn && passwordField) {
+                toggleBtn.addEventListener("click", function () {
+                    const isHidden = passwordField.type === "password";
+                    passwordField.type = isHidden ? "text" : "password";
+                    toggleBtn.textContent = isHidden ? "Masquer" : "Afficher";
+                });
+            }
+        }
 
-document.addEventListener("turbo:load", function () {
-initPasswordToggle();
-loadRecaptchaAndBindSubmission();
-});
-	</script>
+        document.addEventListener("turbo:load", function () {
+            initPasswordToggle();
+            // Pas besoin d'appeler loadRecaptcha... le script Google + le champ Symfony font le boulot.
+        });
+    </script>
 {% endblock %}
